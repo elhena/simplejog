@@ -37,5 +37,7 @@ public class Application {
 		System.out.println("\nContributors:\n");
 		for (Contributor contributor : contributors)
 			System.out.println("\t* " + contributor);
+		
+		System.out.println("\n");
 	}
 }

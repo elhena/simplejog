@@ -13,8 +13,7 @@ public class Contributor {
 	
 	
 	// Constructor
-	public Contributor(String name, String email, String roles)
-	{
+	public Contributor(String name, String email, String roles) {
 		this.name = name;
 		this.email = email;
 		this.roles = roles;

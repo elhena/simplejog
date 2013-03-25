@@ -6,6 +6,7 @@ package com.elhena.simplejog.app;
 
 import com.elhena.simplejog.app.model.Application;
 import com.elhena.simplejog.app.model.ApplicationArgumentsHandler;
+import com.elhena.simplejog.util.logger.Log;
 
 public class Launcher {
 
@@ -17,5 +18,9 @@ public class Launcher {
 		
 		// Application infos
 		Application.showCredits();
+		
+		Log.s("Application is started...");
+		Log.x("fuck");
+		Log.e("Big error");
 	}
 }

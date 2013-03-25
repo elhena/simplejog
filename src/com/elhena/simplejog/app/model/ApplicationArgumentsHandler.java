@@ -4,6 +4,8 @@
 
 package com.elhena.simplejog.app.model;
 
+import com.elhena.simplejog.util.logger.Log;
+
 public class ApplicationArgumentsHandler {
 
 	// Method : Check arguments
@@ -17,6 +19,7 @@ public class ApplicationArgumentsHandler {
 	
 	private static void debugHandler()
 	{
-		System.out.println("DEBUG");
+		System.out.println("*** DEBUG MODE ***\n");
+		Log.debug = true;
 	}
 }
