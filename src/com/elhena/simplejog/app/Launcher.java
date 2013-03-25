@@ -28,6 +28,6 @@ public class Launcher {
 		// Splash
 		Splash splash = new Splash();
 		
-		Log.s("Application is started");
+		Log.s("Application is ready");
 	}
 }
