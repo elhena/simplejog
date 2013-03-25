@@ -48,6 +48,6 @@ public class Contributor {
 	
 	// Method : Return default string value
 	public String toString() {
-		return name + " <" + email + ") - " + roles;
+		return name + " <" + email + "> - " + roles;
 	}
  }

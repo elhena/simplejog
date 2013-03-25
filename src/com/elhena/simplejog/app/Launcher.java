@@ -6,6 +6,8 @@ package com.elhena.simplejog.app;
 
 import com.elhena.simplejog.app.model.Application;
 import com.elhena.simplejog.app.model.ApplicationArgumentsHandler;
+import com.elhena.simplejog.app.splash.Splash;
+import com.elhena.simplejog.util.loader.ResourcesLoader;
 import com.elhena.simplejog.util.logger.Log;
 
 public class Launcher {
@@ -18,9 +20,14 @@ public class Launcher {
 		
 		// Application infos
 		Application.showCredits();
+				
+		// Resources loader
+		ResourcesLoader.loadResources();
+		Log.s("Resources loaded");
 		
-		Log.s("Application is started...");
-		Log.x("fuck");
-		Log.e("Big error");
+		// Splash
+		Splash splash = new Splash();
+		
+		Log.s("Application is started");
 	}
 }
