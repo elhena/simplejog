@@ -41,12 +41,14 @@ public class ResourcesLoader {
 		
 		// List of resources to load
 		imagesToLoad.add("logo.png");
+		imagesToLoad.add("home_new.png");
+		imagesToLoad.add("home_load.png");
 		
 		// Process
 		for (String image : imagesToLoad) {
 			
-			if (new File(RESOURCES_DIRECTORY + "/" + image).exists()) {
-				buffer = Toolkit.getDefaultToolkit().getImage(RESOURCES_DIRECTORY + "/" + image);
+			if (new File(RESOURCES_DIRECTORY + "/images/" + image).exists()) {
+				buffer = Toolkit.getDefaultToolkit().getImage(RESOURCES_DIRECTORY + "/images/" + image);
 				images.put(image, buffer);
 			}
 				

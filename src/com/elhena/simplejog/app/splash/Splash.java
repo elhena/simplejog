@@ -15,6 +15,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JWindow;
 
+import com.elhena.simplejog.controller.FrontController;
 import com.elhena.simplejog.util.loader.ResourcesLoader;
 
 public class Splash extends JWindow {
@@ -22,17 +23,23 @@ public class Splash extends JWindow {
 	// Constants
 	private static final long serialVersionUID = 1L;
 	
+	// Attributes
+	FrontController controller;
+	
 	
 	// Constructor
-	public Splash() {
+	public Splash(FrontController controller) {
+		this.controller = controller;
+		
 		setSize(new Dimension(400, 200));
+		setAlwaysOnTop(true);
 		setLocationRelativeTo(null);
 		
 		getContentPane().add(new JLabel(new ImageIcon(ResourcesLoader.getImage("logo.png"))));
 		setVisible(true);
 		
 		// Timer
-		Timer timer = new Timer();
+		final Timer timer = new Timer();
 		timer.schedule(new TimerTask() {
 
 			@Override
@@ -45,6 +52,7 @@ public class Splash extends JWindow {
 		// Mouse
 		getContentPane().addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent event) {
+				timer.cancel();
 				close();
 			}
 		});
@@ -53,7 +61,7 @@ public class Splash extends JWindow {
 	// Method : Close splash
 	public void close() {
 		dispose();
-		System.exit(0);
+		controller.openHomeFrame();
 	}
 	
 }
