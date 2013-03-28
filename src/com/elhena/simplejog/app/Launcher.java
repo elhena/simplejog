@@ -6,7 +6,7 @@ package com.elhena.simplejog.app;
 
 import com.elhena.simplejog.app.model.Application;
 import com.elhena.simplejog.app.model.ApplicationArgumentsHandler;
-import com.elhena.simplejog.app.splash.Splash;
+import com.elhena.simplejog.app.model.UICompatibility;
 import com.elhena.simplejog.controller.FrontController;
 import com.elhena.simplejog.util.loader.ResourcesLoader;
 import com.elhena.simplejog.util.logger.Log;
@@ -18,6 +18,9 @@ public class Launcher {
 		
 		// Arguments checker
 		ApplicationArgumentsHandler.manage(args);
+		
+		// UI Compability
+		UICompatibility.apply();
 		
 		// Application infos
 		Application.showCredits();

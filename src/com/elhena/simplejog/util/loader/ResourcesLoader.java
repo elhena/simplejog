@@ -40,6 +40,7 @@ public class ResourcesLoader {
 		Image buffer;
 		
 		// List of resources to load
+		imagesToLoad.add("icon.png");
 		imagesToLoad.add("logo.png");
 		imagesToLoad.add("home_new.png");
 		imagesToLoad.add("home_load.png");

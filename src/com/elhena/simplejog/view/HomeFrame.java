@@ -42,6 +42,7 @@ public class HomeFrame extends JFrame {
 		// Window setup
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle(Application.NAME + " - " + WINDOW_TITLE);
+		setIconImage(ResourcesLoader.getImage("icon.png"));
 		setSize(WINDOW_SIZE);
 		setMinimumSize(WINDOW_SIZE_MIN);
 		setResizable(false);
