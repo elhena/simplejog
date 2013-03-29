@@ -5,28 +5,28 @@
 package com.elhena.simplejog.controller;
 
 import com.elhena.simplejog.controller.model.Controller;
-import com.elhena.simplejog.view.HomeFrame;
+import com.elhena.simplejog.view.NewCompetitionFrame;
 
-public class HomeController extends Controller {
+public class NewCompetitionController extends Controller {
 
 	// Attributes
-	private HomeFrame frame;
+	private NewCompetitionFrame frame;
 	
 	
 	// Constructor
-	public HomeController(FrontController controller) {
+	public NewCompetitionController(FrontController controller) {
 		super(controller);
 	}
-	
-	// Method : Open home frame
+
+	// Method : Open new competition frame
 	public void openFrame() {
 		if (frame == null)
-			frame = new HomeFrame(this);
+			frame = new NewCompetitionFrame(this);
 		
 		frame.setVisible(true);
 	}
 	
-	// Method : Close home frame
+	// Method : Close new competition frame
 	public void closeFrame() {
 		if (frame != null)
 			frame.dispose();

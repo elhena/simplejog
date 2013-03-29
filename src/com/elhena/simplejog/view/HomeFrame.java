@@ -7,6 +7,8 @@ package com.elhena.simplejog.view;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -17,6 +19,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import com.elhena.simplejog.app.model.Application;
+import com.elhena.simplejog.controller.HomeController;
 import com.elhena.simplejog.util.loader.ResourcesLoader;
 
 public class HomeFrame extends JFrame {
@@ -25,9 +28,11 @@ public class HomeFrame extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private static final String WINDOW_TITLE = "Accueil";
 	private static final Dimension WINDOW_SIZE = new Dimension(360, 220);
-	private static final Dimension WINDOW_SIZE_MIN = new Dimension(360, 220);
 
 	// Attributes
+	private HomeController controller;
+	
+	// Swing components
 	private JPanel contentPane;
 	private JPanel pnlChoice;
 	private JPanel pnlChoiceLoad;
@@ -38,13 +43,15 @@ public class HomeFrame extends JFrame {
 
 
 	// Constructor
-	public HomeFrame() {
+	public HomeFrame(final HomeController controller) {
+		this.controller = controller;
+		
 		// Window setup
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setTitle(Application.NAME + " - " + WINDOW_TITLE);
 		setIconImage(ResourcesLoader.getImage("icon.png"));
+		setTitle(Application.NAME + " - " + WINDOW_TITLE);
 		setSize(WINDOW_SIZE);
-		setMinimumSize(WINDOW_SIZE_MIN);
+		setMinimumSize(WINDOW_SIZE);
 		setResizable(false);
 		setLocationRelativeTo(null);
 	
@@ -84,6 +91,14 @@ public class HomeFrame extends JFrame {
 		btnNew.setBorder(new EmptyBorder(5, 5, 5, 5));
 		pnlChoiceNew.add(btnNew);
 		pnlChoiceNew.add(new JLabel("Créer une compétition"));
+		
+		// Action : New competition
+		btnNew.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent event) {
+				dispose();
+				controller.getFrontController().openNewCompetitionFrame();
+			}	
+		});
 	}
-
 }

@@ -11,10 +11,12 @@ public class FrontController {
 	// Attributes
 	private Splash splash;
 	private HomeController home;
+	private NewCompetitionController newCompetition;
 	
 	// Constructor
 	public FrontController() {
 		home = new HomeController(this);
+		newCompetition = new NewCompetitionController(this);
 	}
 	
 	// Method : Open splash
@@ -28,13 +30,23 @@ public class FrontController {
 			splash.dispose();
 	}
 	
-	// Method : Open Home frame
+	// Method : Open home frame
 	public void openHomeFrame() {
 		home.openFrame();
 	}
 	
-	// Method : Close
+	// Method : Close home frame
 	public void closeHomeFrame() {
 		home.closeFrame();
+	}
+	
+	// Method : Open new competition frame
+	public void openNewCompetitionFrame() {
+		newCompetition.openFrame();
+	}
+	
+	// Method : Close new competition frame
+	public void closeNewCompetitionFrame() {
+		newCompetition.closeFrame();
 	}
  }

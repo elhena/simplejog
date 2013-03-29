@@ -19,6 +19,7 @@ public class Competition {
 	
 	// Constructor
 	public Competition(String name, String location) {
+		this.date = new Date();
 		this.name = name;
 		this.location = location;
 		
