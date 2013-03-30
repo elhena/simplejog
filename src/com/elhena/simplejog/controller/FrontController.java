@@ -5,6 +5,7 @@
 package com.elhena.simplejog.controller;
 
 import com.elhena.simplejog.app.splash.Splash;
+import com.elhena.simplejog.model.Competition;
 
 public class FrontController {
 
@@ -12,11 +13,13 @@ public class FrontController {
 	private Splash splash;
 	private HomeController home;
 	private NewCompetitionController newCompetition;
+	private CompetitionController competition;
 	
 	// Constructor
 	public FrontController() {
 		home = new HomeController(this);
 		newCompetition = new NewCompetitionController(this);
+		competition = new CompetitionController(this);
 	}
 	
 	// Method : Open splash
@@ -48,5 +51,16 @@ public class FrontController {
 	// Method : Close new competition frame
 	public void closeNewCompetitionFrame() {
 		newCompetition.closeFrame();
+	}
+	
+	// Method : Open competition frame
+	public void openCompetitionFrame(Competition competition) {
+		this.competition.setCompetition(competition);
+		this.competition.openFrame();
+	}
+	
+	// Method : Close competition frame
+	public void closeCompetitionFrame() {
+		this.competition.closeFrame();
 	}
  }

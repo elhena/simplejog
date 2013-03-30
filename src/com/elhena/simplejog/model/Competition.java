@@ -12,14 +12,16 @@ public class Competition {
 
 	// Attributes
 	private String name;
-	private Date date;
+	private Date createdAt;
+	private Date startTime;
 	private String location;
+	private boolean running;
 	private ArrayList<Race> races;
 	
 	
 	// Constructor
 	public Competition(String name, String location) {
-		this.date = new Date();
+		this.createdAt = new Date();
 		this.name = name;
 		this.location = location;
 		
@@ -32,12 +34,20 @@ public class Competition {
 		return name;
 	}
 	
-	public Date getDate() {
-		return date;
+	public Date getCreatedAt() {
+		return createdAt;
+	}
+	
+	public Date getStartTime() {
+		return startTime;
 	}
 	
 	public String getLocation() {
 		return location;
+	}
+	
+	public boolean isRunning() {
+		return running;
 	}
 	
 	public ArrayList<Race> getRaces() {
@@ -49,17 +59,21 @@ public class Competition {
 		name = newName;
 	}
 	
-	public void setDate(Date newDate) {
-		date = newDate;
+	public void setStartTime(Date newStartTime) {
+		startTime = newStartTime;
 	}
 	
 	public void setLocation(String newLocation) {
 		location = newLocation;
 	}
 	
+	public void setRunning(boolean state) {
+		running = state;
+	}
+	
 	// Method : Get default string value
 	public String toString() {
-		return name + " - " + new SimpleDateFormat("dd/MM/yyyy").format(date) + " - " + location;
+		return name + " - " + new SimpleDateFormat("dd/MM/yyyy").format(createdAt) + " - " + location;
 	}
 	
 	// Method : Equals two Competition

@@ -12,7 +12,6 @@ public class Race {
 	// Attributes
 	private Competition competition;
 	private Jogger jogger;
-	private Date startTime;
 	private Date endTime;
 	
 	
@@ -32,10 +31,6 @@ public class Race {
 		return jogger;
 	}
 	
-	public Date getStartTime() {
-		return startTime;
-	}
-	
 	public Date getEndTime() {
 		return endTime;
 	}
@@ -45,22 +40,18 @@ public class Race {
 		jogger = newJogger;
 	}
 	
-	public void setStartTime(Date newStartTime) {
-		startTime = newStartTime;
-	}
-	
 	public void setEndTime(Date newEndTime) {
 		endTime = newEndTime;
 	}
 	
 	// Method : Get duration
 	public Date getDuration() {
-		return new Date(endTime.getTime() - startTime.getTime());
+		return new Date(endTime.getTime() - competition.getStartTime().getTime());
 	}
 	
 	// Method : Get default string value
 	public String toString() {
-		return jogger.getName() + " - " + new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(startTime) + " -> " + new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(endTime) + " - " + new SimpleDateFormat("HH:mm:ss").format(getDuration());
+		return jogger.getName() + " - " + new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(competition.getStartTime()) + " -> " + new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(endTime) + " - " + new SimpleDateFormat("HH:mm:ss").format(getDuration());
 	}
 	
 	// Method : Equals two Race

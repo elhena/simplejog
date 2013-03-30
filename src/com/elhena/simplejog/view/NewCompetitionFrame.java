@@ -9,11 +9,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -58,7 +54,7 @@ public class NewCompetitionFrame extends JFrame {
 		this.controller = controller;
 		
 		// Window setup
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setIconImage(ResourcesLoader.getImage("icon.png"));
 		setTitle(Application.NAME + " - " + WINDOW_TITLE);
 		setSize(WINDOW_SIZE);
@@ -114,14 +110,6 @@ public class NewCompetitionFrame extends JFrame {
 		
 		pnlActions.add(btnCancel);
 		pnlActions.add(btnCreate);
-		
-		// Triggers to execute when window is closing
-		addWindowListener(new WindowAdapter() {
-			@Override
-			public void windowClosed(WindowEvent event) {
-				controller.getFrontController().openHomeFrame();
-			}
-		});
 	}
 	
 	// Method : Check form
@@ -136,8 +124,9 @@ public class NewCompetitionFrame extends JFrame {
 		
 		if (errors.size() == 0) {
 			Competition competition = new Competition(tfdFormName.getText(), tfdFormLocation.getText());
-			Log.i(competition.toString());
-			System.exit(0);
+			Log.i("The competition '" + competition.getName() + "' has been created");
+			dispose();
+			controller.getFrontController().openCompetitionFrame(competition);
 		}
 		
 		else {
