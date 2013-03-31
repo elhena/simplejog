@@ -73,7 +73,7 @@ public class NewCompetitionFrame extends JFrame {
 		pnlForm.setLayout(new MigLayout());
 		contentPane.add(pnlForm, BorderLayout.CENTER);
 		
-		// Form : name
+		// Form : Name
 		lblFormName = new JLabel("Nom: ");
 		tfdFormName = new JTextField();
 		pnlForm.add(lblFormName, "cell 0 0");

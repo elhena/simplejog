@@ -15,7 +15,7 @@ public class Competition {
 	private Date createdAt;
 	private Date startTime;
 	private String location;
-	private boolean running;
+	private CompetitionStatus status;
 	private ArrayList<Race> races;
 	
 	
@@ -24,6 +24,7 @@ public class Competition {
 		this.createdAt = new Date();
 		this.name = name;
 		this.location = location;
+		this.status = CompetitionStatus.STANDBY;
 		
 		races = new ArrayList<Race>();
 	}
@@ -46,8 +47,8 @@ public class Competition {
 		return location;
 	}
 	
-	public boolean isRunning() {
-		return running;
+	public CompetitionStatus getStatus() {
+		return status;
 	}
 	
 	public ArrayList<Race> getRaces() {
@@ -67,8 +68,8 @@ public class Competition {
 		location = newLocation;
 	}
 	
-	public void setRunning(boolean state) {
-		running = state;
+	public void setRunning(CompetitionStatus state) {
+		status = state;
 	}
 	
 	// Method : Get default string value

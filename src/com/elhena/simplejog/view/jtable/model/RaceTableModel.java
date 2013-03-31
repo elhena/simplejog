@@ -16,7 +16,7 @@ public class RaceTableModel extends AbstractTableModel {
 	private static final long serialVersionUID = 1L;
 	
 	// Attributes
-	private final String[] columns = new String[] {"Nom", "Départ", "Arrivée", "Durée"};
+	private final String[] columns = new String[] {"Numéro", "Nom", "Départ", "Arrivée", "Durée"};
 	private Competition competition;
 	
 	
@@ -43,10 +43,11 @@ public class RaceTableModel extends AbstractTableModel {
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		switch(columnIndex) {
-			case 0: return competition.getRaces().get(rowIndex).getJogger().getName();
-			case 1: return new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(competition.getRaces().get(rowIndex).getCompetition().getStartTime());
-			case 2: return new SimpleDateFormat("HH:mm:ss").format(competition.getRaces().get(rowIndex).getEndTime());
-			case 3: return competition.getRaces().get(rowIndex).getDuration();
+			case 0: return competition.getRaces().get(rowIndex).getNumber();
+			case 1: return competition.getRaces().get(rowIndex).getJogger().getName();
+			case 2: return (competition.getStartTime() != null) ? new SimpleDateFormat("dd/MM:yyyy HH:mm:ss").format(competition.getStartTime()) : "--/--/---- --:--:--";
+			case 3: return (competition.getRaces().get(rowIndex).getEndTime() != null) ? new SimpleDateFormat("HH:mm:ss").format(competition.getRaces().get(rowIndex).getEndTime()) : "--:--:--";
+			case 4: return (competition.getStartTime() == null || competition.getRaces().get(rowIndex).getEndTime() == null) ? "--:--:--" : competition.getRaces().get(rowIndex).getDuration(); 
 			default: return "Inconnu";
 		}
 	}

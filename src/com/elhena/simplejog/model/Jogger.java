@@ -16,7 +16,11 @@ public class Jogger {
 	
 	
 	// Constructor
-	public Jogger() {}
+	public Jogger(String name, JoggerSex sex, Date birthday) {
+		this.name = name;
+		this.sex = sex;
+		this.birthday = birthday;
+	}
 	
 	// Methods : Encapsulation
 	// Getters
