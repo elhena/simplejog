@@ -169,7 +169,7 @@ public class SetRaceFrame extends JDialog {
 		spnFormNumber.setValue(race.getNumber());
 		tfdFormName.setText(race.getJogger().getName());
 		tfdFormBirthday.setText(new SimpleDateFormat("dd/MM/yyyy").format(race.getJogger().getBirthday()));
-		Log.i(race.getJogger().getSexAsString());
+		
 		switch(race.getJogger().getSex()) {
 			case MAN: rbtnSexMale.setSelected(true); break;
 			case WOMAN: rbtnSexFemale.setSelected(true); break;
@@ -183,6 +183,9 @@ public class SetRaceFrame extends JDialog {
 		
 		// Number check
 		if (!((CompetitionController) controller.getParentController()).numberIsAvailable((Integer) spnFormNumber.getValue()) || ((Integer) spnFormNumber.getValue()) < 1) {
+			
+			if (newRace)
+				errors.add("Le numŽro saisie n'est pas disponible");
 			
 			if (!(newRace || ((Integer) spnFormNumber.getValue()) == controller.getRace().getNumber()))
 				errors.add("Le numŽro saisi n'est pas disponible");
@@ -244,6 +247,7 @@ public class SetRaceFrame extends JDialog {
 				
 				dispose();
 				((CompetitionController) controller.getParentController()).refreshRaces();
+				Log.i("Jogger '" + controller.getRace().getJogger().getName() + "' has been modified");
 			}
 		}
 		
