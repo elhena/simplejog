@@ -68,7 +68,7 @@ public class Competition {
 		location = newLocation;
 	}
 	
-	public void setRunning(CompetitionStatus state) {
+	public void setStatus(CompetitionStatus state) {
 		status = state;
 	}
 	

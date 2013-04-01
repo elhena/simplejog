@@ -11,6 +11,10 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -40,6 +44,7 @@ public class CompetitionFrame extends JFrame {
 	
 	// Attributes
 	private CompetitionController controller;
+	private Timer timer;
 	
 	// Swing components
 	private JPanel contentPane;
@@ -64,7 +69,7 @@ public class CompetitionFrame extends JFrame {
 	public CompetitionFrame(final CompetitionController controller) {
 		this.controller = controller;
 		
-		// Window Setup
+		// Window setup
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setIconImage(ResourcesLoader.getImage("icon.png"));
 		setTitle(Application.NAME + " - " + controller.getCompetition().getName() + " @ " + controller.getCompetition().getLocation());
@@ -102,6 +107,18 @@ public class CompetitionFrame extends JFrame {
 		btnStartandStop = new JButton("Démarrer");
 		btnStartandStop.setToolTipText("Commencer la course");
 		pnlCompetitionControls.add(btnStartandStop);
+		btnStartandStop.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent event) {
+				switch(controller.getCompetition().getStatus()) {
+					case STANDBY: controller.startCompetition(); break;
+					case RUNNING: controller.stopCompetition(); break;
+					default: break;
+				}
+			
+				
+			}
+		});
 		
 		// Competition timer
 		pnlCompetitionTimer = new JPanel();
@@ -202,5 +219,39 @@ public class CompetitionFrame extends JFrame {
 	// Method : Update table
 	public void updateTable() {
 		((RaceTableModel) tblJoggers.getModel()).fireTableDataChanged();
+	}
+	
+	// Method : Start competition
+	public void startCompetition() {
+		// Disable buttons
+		btnStartandStop.setText("Arrêter");
+		btnStartandStop.setToolTipText("Mettre fin à la course");
+		btnAddJogger.setEnabled(false);
+		btnEditJogger.setEnabled(false);
+		btnDeleteJogger.setEnabled(false);
+		
+		// Update timer
+		timer = new Timer();;
+		timer.scheduleAtFixedRate(new TimerTask() {
+			@Override
+			public void run() {
+				lblTime.setText(new SimpleDateFormat("HH:mm:ss").format(new Date(new Date().getTime() - controller.getCompetition().getStartTime().getTime() - (1000 * 60 * 60))));
+			}
+		}, new Date(), 1000);
+		
+		updateTable();
+	}
+	
+	// Method : Stop competition
+	public void stopCompetition() {
+		// Kill timer
+		timer.cancel();
+		
+		// Enable buttons
+		btnStartandStop.setText("Générer le PDF");
+		btnStartandStop.setToolTipText("Obtenir le classement au format PDF");
+		btnEditJogger.setEnabled(true);
+		
+		updateTable();
 	}
 }

@@ -5,9 +5,11 @@
 package com.elhena.simplejog.controller;
 
 import java.util.Collections;
+import java.util.Date;
 
 import com.elhena.simplejog.controller.model.Controller;
 import com.elhena.simplejog.model.Competition;
+import com.elhena.simplejog.model.CompetitionStatus;
 import com.elhena.simplejog.model.Race;
 import com.elhena.simplejog.util.logger.Log;
 import com.elhena.simplejog.view.CompetitionFrame;
@@ -19,6 +21,7 @@ public class CompetitionController extends Controller {
 	private Competition competition;
 	private SetRaceController raceController;
 	private ViewRaceController viewController;
+	private ArrivalCaptureController captureController;
 	
 	// Constructor
 	public CompetitionController(FrontController controller) {
@@ -26,6 +29,7 @@ public class CompetitionController extends Controller {
 		
 		raceController = new SetRaceController(this);
 		viewController = new ViewRaceController(this);
+		captureController = new ArrivalCaptureController(this);
 	}
 	
 	// Method : Set competition
@@ -70,6 +74,16 @@ public class CompetitionController extends Controller {
 	// Method : Close view race frame
 	public void closeViewRaceFrame() {
 		viewController.closeFrame();
+	}
+	
+	// Method : Open arrival capture frame
+	public void openArrivalCaptureFrame() {
+		captureController.openFrame();
+	}
+	
+	// Method : Close arrival capture frame
+	public void closeArrivalCaptureFrame() {
+		captureController.closeFrame();
 	}
 	
 	// Method : Get competition
@@ -126,5 +140,45 @@ public class CompetitionController extends Controller {
 	// Method : Refresh races
 	public void refreshRaces() {
 		frame.updateTable();
+	}
+	
+	// Method : Start the competition
+	public void startCompetition() {
+		Date startTime = new Date();
+		competition.setStatus(CompetitionStatus.RUNNING);
+		competition.setStartTime(startTime);
+		
+		frame.startCompetition();
+		openArrivalCaptureFrame();
+		Log.i("Competition '" + competition.getName() + "' is running");
+	}
+	
+	// Method : Stop the competition
+	public void stopCompetition() {
+		Date endTime = new Date();
+		frame.stopCompetition();
+		competition.setStatus(CompetitionStatus.FINISHED);
+		for (Race r : competition.getRaces()) {
+			if (r.getEndTime() == null)
+				r.setEndTime(endTime);
+		}
+		
+		closeArrivalCaptureFrame();
+		Log.i("Competition '" + competition.getName() + "' is finished");
+	}
+	
+	// Method : Add new arrival
+	public Race addArrival(int number) {
+		Date arrival = new Date();
+		
+		for (Race r : competition.getRaces()) {
+			if (r.getNumber() == number && r.getEndTime() == null) {
+				r.setEndTime(arrival);
+				refreshRaces();
+				return r;
+			}
+		}
+		
+		return null;
 	}
 }

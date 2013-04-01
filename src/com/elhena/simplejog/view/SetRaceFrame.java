@@ -199,6 +199,7 @@ public class SetRaceFrame extends JDialog {
 		if (!tfdFormBirthday.getText().matches("[0-9]{2}/[0-9]{2}/[0-9]{4}"))
 			errors.add("La date n'est pas au format 'dd/mm/yyyy'");
 		
+		// Validating chek
 		if (errors.size() == 0) {
 			Jogger newJogger = null;
 			try {
