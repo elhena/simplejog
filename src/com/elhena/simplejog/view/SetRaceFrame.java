@@ -169,10 +169,11 @@ public class SetRaceFrame extends JDialog {
 		spnFormNumber.setValue(race.getNumber());
 		tfdFormName.setText(race.getJogger().getName());
 		tfdFormBirthday.setText(new SimpleDateFormat("dd/MM/yyyy").format(race.getJogger().getBirthday()));
+		Log.i(race.getJogger().getSexAsString());
 		switch(race.getJogger().getSex()) {
-			case MAN: rbtnSexMale.setSelected(true);
-			case WOMAN: rbtnSexFemale.setSelected(true);
-			default: rbtnSexMale.setSelected(true);
+			case MAN: rbtnSexMale.setSelected(true); break;
+			case WOMAN: rbtnSexFemale.setSelected(true); break;
+			default: rbtnSexMale.setSelected(true); break;
 		}
 	}
 	
@@ -180,13 +181,18 @@ public class SetRaceFrame extends JDialog {
 	private void checkForm() {
 		ArrayList<String> errors = new ArrayList<String>();
 		
-		if (!((CompetitionController) controller.getParentController()).numberIsAvailable((Integer) spnFormNumber.getValue())) {
-			errors.add("Le numéro saisi n'est pas disponible");
+		// Number check
+		if (!((CompetitionController) controller.getParentController()).numberIsAvailable((Integer) spnFormNumber.getValue()) || ((Integer) spnFormNumber.getValue()) < 1) {
+			
+			if (!(newRace || ((Integer) spnFormNumber.getValue()) == controller.getRace().getNumber()))
+				errors.add("Le numéro saisi n'est pas disponible");
 		}
 		
+		// Name check
 		if (tfdFormName.getText().length() < 4)
 			errors.add("Le nom du participant doit contenir au moins 4 caractères");
 		
+		// Birthday check
 		if (!tfdFormBirthday.getText().matches("[0-9]{2}/[0-9]{2}/[0-9]{4}"))
 			errors.add("La date n'est pas au format 'dd/mm/yyyy'");
 		
@@ -215,8 +221,6 @@ public class SetRaceFrame extends JDialog {
 				
 				dispose();
 				JOptionPane.showMessageDialog(this, "Le participant '" + newJogger.getName() + "' a bien été ajouté à la compétition!", Application.NAME + " - Confirmation", JOptionPane.INFORMATION_MESSAGE);
-				// TODO debug
-				Log.i(race.getJogger().getSexAsString());
 			}
 			
 			// Edit race
@@ -243,6 +247,7 @@ public class SetRaceFrame extends JDialog {
 			}
 		}
 		
+		// Show errors
 		else {
 			String message = "";
 			for (String error: errors)

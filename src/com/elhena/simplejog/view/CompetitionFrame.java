@@ -20,6 +20,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
@@ -55,6 +56,7 @@ public class CompetitionFrame extends JFrame {
 	private JLabel lblTime;
 	private JButton btnStartandStop;
 	private JButton btnAddJogger;
+	private JButton btnViewJogger;
 	private JButton btnEditJogger;
 	private JButton btnDeleteJogger;
 	
@@ -116,6 +118,7 @@ public class CompetitionFrame extends JFrame {
 		tblJoggers = new JTable(new RaceTableModel(controller.getCompetition()));
 		tblJoggers.setAutoResizeMode(JTable.AUTO_RESIZE_NEXT_COLUMN);
 		tblJoggers.setAutoCreateRowSorter(true);
+		tblJoggers.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		pnlJoggers = new JScrollPane(tblJoggers);
 		pnlJoggers.setBorder(new LineBorder(Color.GRAY));
 		contentPane.add(pnlJoggers, BorderLayout.CENTER);
@@ -148,13 +151,29 @@ public class CompetitionFrame extends JFrame {
 		pnlJoggersControlsEdit.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		pnlJoggersControls.add(pnlJoggersControlsEdit);
 		
+		btnViewJogger = new JButton("Consulter");
+		btnViewJogger.setToolTipText("Afficher les informations du participant sélectionné");
+		pnlJoggersControlsEdit.add(btnViewJogger);
+		btnViewJogger.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent event) {
+				if (tblJoggers.getSelectedRow() != -1)
+					controller.openViewRaceFrame(controller.getCompetition().getRaces().get(tblJoggers.convertColumnIndexToView(tblJoggers.getSelectedRow())));
+				else
+					JOptionPane.showMessageDialog(CompetitionFrame.this, "Aucun participant n'a été sélectionné pour être consulté.", Application.NAME + " - Consultation impossible", JOptionPane.ERROR_MESSAGE);
+			}
+		});
+		
 		btnEditJogger = new JButton("Modifier");
 		btnEditJogger.setToolTipText("Modifier le participant sélectionné");
 		pnlJoggersControlsEdit.add(btnEditJogger);
 		btnEditJogger.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent event) {
-				controller.openSetRaceFrame(controller.getCompetition().getRaces().get(tblJoggers.convertColumnIndexToView(tblJoggers.getSelectedRow())));
+				if (tblJoggers.getSelectedRow() != -1)
+					controller.openSetRaceFrame(controller.getCompetition().getRaces().get(tblJoggers.convertColumnIndexToView(tblJoggers.getSelectedRow())));
+				else
+					JOptionPane.showMessageDialog(CompetitionFrame.this, "Aucun participant n'a été sélectionné pour être modifié.", Application.NAME + " - Modification impossible", JOptionPane.ERROR_MESSAGE);
 			}
 		});
 		
@@ -175,7 +194,7 @@ public class CompetitionFrame extends JFrame {
 				}
 				
 				else
-					JOptionPane.showMessageDialog(CompetitionFrame.this, "Aucun participant n'est sélectionné pour être supprimé.", Application.NAME + " - Suppression impossible", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(CompetitionFrame.this, "Aucun participant n'a été sélectionné pour être supprimé.", Application.NAME + " - Suppression impossible", JOptionPane.ERROR_MESSAGE);
 			}
 		});
 	}

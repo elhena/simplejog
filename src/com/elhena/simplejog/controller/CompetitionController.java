@@ -18,12 +18,14 @@ public class CompetitionController extends Controller {
 	private CompetitionFrame frame;
 	private Competition competition;
 	private SetRaceController raceController;
+	private ViewRaceController viewController;
 	
 	// Constructor
 	public CompetitionController(FrontController controller) {
 		super(controller);
 		
 		raceController = new SetRaceController(this);
+		viewController = new ViewRaceController(this);
 	}
 	
 	// Method : Set competition
@@ -58,6 +60,16 @@ public class CompetitionController extends Controller {
 	// Method : Close set race frame
 	public void closeSetRaceFrame() {
 		raceController.closeFrame();
+	}
+	
+	// Method : Open view race frame
+	public void openViewRaceFrame(Race race) {
+		viewController.openFrame(race);
+	}
+	
+	// Method : Close view race frame
+	public void closeViewRaceFrame() {
+		viewController.closeFrame();
 	}
 	
 	// Method : Get competition
