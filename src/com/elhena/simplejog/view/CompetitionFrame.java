@@ -112,11 +112,9 @@ public class CompetitionFrame extends JFrame {
 			public void actionPerformed(ActionEvent event) {
 				switch(controller.getCompetition().getStatus()) {
 					case STANDBY: controller.startCompetition(); break;
-					case RUNNING: controller.stopCompetition(); break;
+					case RUNNING: if (JOptionPane.showConfirmDialog(CompetitionFrame.this, "Êtes-vous sûr de vouloir mettre fin à la compétition? Cela sera irreversible.", Application.NAME + " - Arrêter la compétition?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION) controller.stopCompetition(); break;
 					default: break;
-				}
-			
-				
+				}	
 			}
 		});
 		
@@ -175,7 +173,7 @@ public class CompetitionFrame extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent event) {
 				if (tblJoggers.getSelectedRow() != -1)
-					controller.openViewRaceFrame(controller.getCompetition().getRaces().get(tblJoggers.convertColumnIndexToView(tblJoggers.getSelectedRow())));
+					controller.openViewRaceFrame(controller.getCompetition().getRaces().get(tblJoggers.convertRowIndexToModel(tblJoggers.getSelectedRow())));
 				else
 					JOptionPane.showMessageDialog(CompetitionFrame.this, "Aucun participant n'a été sélectionné pour être consulté.", Application.NAME + " - Consultation impossible", JOptionPane.ERROR_MESSAGE);
 			}
@@ -188,7 +186,7 @@ public class CompetitionFrame extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent event) {
 				if (tblJoggers.getSelectedRow() != -1)
-					controller.openSetRaceFrame(controller.getCompetition().getRaces().get(tblJoggers.convertColumnIndexToView(tblJoggers.getSelectedRow())));
+					controller.openSetRaceFrame(controller.getCompetition().getRaces().get(tblJoggers.convertRowIndexToModel(tblJoggers.getSelectedRow())));
 				else
 					JOptionPane.showMessageDialog(CompetitionFrame.this, "Aucun participant n'a été sélectionné pour être modifié.", Application.NAME + " - Modification impossible", JOptionPane.ERROR_MESSAGE);
 			}

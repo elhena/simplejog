@@ -175,10 +175,23 @@ public class CompetitionController extends Controller {
 			if (r.getNumber() == number && r.getEndTime() == null) {
 				r.setEndTime(arrival);
 				refreshRaces();
-				return r;
+				Log.i("Jogger '" + r.getJogger().getName() + "' has finished his race"); return r;
 			}
 		}
 		
 		return null;
+	}
+	
+	// Method : Check if everyone is arrived
+	public void checkJoggerCurrentlyRunning() {
+		int error = 0;
+		
+		for (Race r : competition.getRaces()) {
+			if (r.getEndTime() == null)
+				error++;
+		}
+		
+		if (error == 0)
+			stopCompetition();
 	}
 }

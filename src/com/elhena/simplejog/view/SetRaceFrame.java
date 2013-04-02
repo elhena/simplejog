@@ -224,7 +224,6 @@ public class SetRaceFrame extends JDialog {
 				((CompetitionController) controller.getParentController()).addRace(race);
 				
 				dispose();
-				JOptionPane.showMessageDialog(this, "Le participant '" + newJogger.getName() + "' a bien été ajouté à la compétition!", Application.NAME + " - Confirmation", JOptionPane.INFORMATION_MESSAGE);
 			}
 			
 			// Edit race

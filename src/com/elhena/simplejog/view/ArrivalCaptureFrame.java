@@ -10,6 +10,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -97,6 +99,21 @@ public class ArrivalCaptureFrame extends JFrame {
 ;			}
 		});
 		
+		tfdCapture.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent event) {
+				if (event.getKeyCode() == KeyEvent.VK_ENTER) {
+					if (tfdCapture.getText().matches("[0-9]+")) {
+						arrival(Integer.parseInt(tfdCapture.getText()));
+						tfdCapture.requestFocus();
+					}
+					
+					else
+						JOptionPane.showMessageDialog(ArrivalCaptureFrame.this, "Le champ ne tolère qu'un nombre.", Application.NAME + " - Erreur de saisie", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		});
+		
 		// Last arrival panel
 		pnlPreviousCapture = new JPanel();
 		pnlPreviousCapture.setBorder(new EmptyBorder(0, 0, 0, 0));
@@ -110,10 +127,11 @@ public class ArrivalCaptureFrame extends JFrame {
 		pnlPreviousCapture.add(lblPreviousCapture);
 		pnlPreviousCapture.add(lblPreviousCaptureName);
 	}
-		
+	
 	// Method : arrival
 	private void arrival(int number) {
 		Race race = ((CompetitionController) controller.getParentController()).addArrival(number);
+		((CompetitionController) controller.getParentController()).checkJoggerCurrentlyRunning();
 		
 		tfdCapture.setText("");
 		tfdCapture.requestFocus();
