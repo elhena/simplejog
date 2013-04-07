@@ -1,5 +1,5 @@
 /**
- * @author Fabien Vanden Bulck
+ * @author Fabien Vanden Bulck <fabien@elhena.com>
  */
 
 package com.elhena.simplejog.view;
@@ -320,6 +320,12 @@ public class CompetitionFrame extends JFrame {
 		menuItem.setMnemonic(KeyEvent.VK_A);
 		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, KeyEvent.CTRL_DOWN_MASK + KeyEvent.SHIFT_DOWN_MASK));
 		menu.add(menuItem);
+		menuItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent event) {
+				controller.openAboutFrame();
+			}
+		});
 		
 		
 		// Competition panel
@@ -484,6 +490,9 @@ public class CompetitionFrame extends JFrame {
 		}
 		
 		if (controller.getCompetition().getStatus() == CompetitionStatus.FINISHED) {
+			btnAddJogger.setEnabled(false);
+			btnEditJogger.setEnabled(false);
+			btnDeleteJogger.setEnabled(false);
 			btnStartandStop.setText("Générer le PDF");
 			btnStartandStop.setToolTipText("Obtenir le classement au format PDF");
 			btnEditJogger.setEnabled(true);

@@ -23,6 +23,7 @@ public class CompetitionController extends Controller {
 	private SetRaceController raceController;
 	private ViewRaceController viewController;
 	private ArrivalCaptureController captureController;
+	private AboutController aboutController;
 	
 	// Constructor
 	public CompetitionController(FrontController controller) {
@@ -31,6 +32,7 @@ public class CompetitionController extends Controller {
 		raceController = new SetRaceController(this);
 		viewController = new ViewRaceController(this);
 		captureController = new ArrivalCaptureController(this);
+		aboutController = new AboutController(this);
 	}
 	
 	// Method : Set competition
@@ -83,6 +85,16 @@ public class CompetitionController extends Controller {
 	// Method : Close arrival capture frame
 	public void closeArrivalCaptureFrame() {
 		captureController.closeFrame();
+	}
+	
+	// Method : Open about frame
+	public void openAboutFrame() {
+		aboutController.openFrame();
+	}
+	
+	// Method : Close about frame
+	public void closeAboutFrame() {
+		aboutController.closeFrame();
 	}
 	
 	// Method : Get competition

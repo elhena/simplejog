@@ -62,6 +62,7 @@ public class ArrivalCaptureFrame extends JFrame {
 		setMinimumSize(WINDOW_SIZE);
 		setResizable(false);
 		setLocationRelativeTo(null);
+		setAlwaysOnTop(true);
 		
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
