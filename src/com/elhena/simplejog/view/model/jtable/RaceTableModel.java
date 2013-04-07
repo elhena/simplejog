@@ -2,7 +2,7 @@
  * @author Fabien Vanden Bulck <fabien@elhena.com>
  */
 
-package com.elhena.simplejog.view.jtable.model;
+package com.elhena.simplejog.view.model.jtable;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

@@ -4,10 +4,14 @@
 
 package com.elhena.simplejog.model;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class Jogger {
+public class Jogger implements Serializable {
+	
+	// Constants
+	private static final long serialVersionUID = 1L;
 	
 	// Attributes
 	private String name;

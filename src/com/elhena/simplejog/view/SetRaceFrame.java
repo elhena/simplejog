@@ -31,6 +31,7 @@ import net.miginfocom.swing.MigLayout;
 import com.elhena.simplejog.app.model.Application;
 import com.elhena.simplejog.controller.CompetitionController;
 import com.elhena.simplejog.controller.SetRaceController;
+import com.elhena.simplejog.model.Competition;
 import com.elhena.simplejog.model.Jogger;
 import com.elhena.simplejog.model.JoggerSex;
 import com.elhena.simplejog.model.Race;
@@ -86,6 +87,7 @@ public class SetRaceFrame extends JDialog {
 		setResizable(false);
 		setModal(true);
 		setLocationRelativeTo(((CompetitionController) controller.getParentController()).getFrame());
+		setAlwaysOnTop(true);
 		
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(0, 0, 0, 0));
@@ -221,8 +223,7 @@ public class SetRaceFrame extends JDialog {
 				else
 					race.getJogger().setSex(JoggerSex.WOMAN);
 				
-				((CompetitionController) controller.getParentController()).addRace(race);
-				
+				((CompetitionController) controller.getParentController()).addRace(race);		
 				dispose();
 			}
 			
@@ -249,6 +250,9 @@ public class SetRaceFrame extends JDialog {
 				((CompetitionController) controller.getParentController()).refreshRaces();
 				Log.i("Jogger '" + controller.getRace().getJogger().getName() + "' has been modified");
 			}
+			
+			Competition.notifyDataChanged();
+			((CompetitionController) controller.getParentController()).getFrame().enableSaveFunction();
 		}
 		
 		// Show errors

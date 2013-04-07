@@ -19,7 +19,7 @@ public class Launcher {
 		// Arguments checker
 		ApplicationArgumentsHandler.manage(args);
 		
-		// UI Compability
+		// UI Compatibility
 		UICompatibility.apply();
 		
 		// Application infos

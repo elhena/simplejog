@@ -20,9 +20,7 @@ public class NewCompetitionController extends Controller {
 
 	// Method : Open new competition frame
 	public void openFrame() {
-		if (frame == null)
-			frame = new NewCompetitionFrame(this);
-		
+		frame = new NewCompetitionFrame(this);		
 		frame.setVisible(true);
 	}
 	

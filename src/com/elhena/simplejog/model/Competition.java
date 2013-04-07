@@ -4,11 +4,15 @@
 
 package com.elhena.simplejog.model;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Competition {
+public class Competition implements Serializable {
+	
+	// Constants
+	private static final long serialVersionUID = 1L;
 
 	// Attributes
 	private String name;
@@ -17,6 +21,7 @@ public class Competition {
 	private String location;
 	private CompetitionStatus status;
 	private ArrayList<Race> races;
+	private static boolean updated = true;
 	
 	
 	// Constructor
@@ -95,5 +100,20 @@ public class Competition {
 	public void removeRace(Race race) {
 		if (races.contains(race))
 			races.remove(race);
+	}
+	
+	// Method : Check if data changed
+	public static boolean dataIsUpdated() {
+		return updated;
+	}
+	
+	// Method : Notify data changed
+	public static void notifyDataChanged() {
+		updated = false;
+	}
+	
+	// Method : Notify date updated
+	public static void notifyDataUpdated() {
+		updated = true;
 	}
 }

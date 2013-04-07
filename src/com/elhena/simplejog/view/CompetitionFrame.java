@@ -7,10 +7,16 @@ package com.elhena.simplejog.view;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FileDialog;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.File;
+import java.io.FilenameFilter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Timer;
@@ -20,10 +26,14 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
@@ -32,9 +42,11 @@ import javax.swing.border.TitledBorder;
 
 import com.elhena.simplejog.app.model.Application;
 import com.elhena.simplejog.controller.CompetitionController;
+import com.elhena.simplejog.model.Competition;
+import com.elhena.simplejog.model.CompetitionStatus;
 import com.elhena.simplejog.model.Race;
 import com.elhena.simplejog.util.loader.ResourcesLoader;
-import com.elhena.simplejog.view.jtable.model.RaceTableModel;
+import com.elhena.simplejog.view.model.jtable.RaceTableModel;
 
 public class CompetitionFrame extends JFrame {
 
@@ -45,6 +57,7 @@ public class CompetitionFrame extends JFrame {
 	// Attributes
 	private CompetitionController controller;
 	private Timer timer;
+	public static String savePath;
 	
 	// Swing components
 	private JPanel contentPane;
@@ -64,13 +77,19 @@ public class CompetitionFrame extends JFrame {
 	private JButton btnViewJogger;
 	private JButton btnEditJogger;
 	private JButton btnDeleteJogger;
+	private JMenuBar menuBar;
+	private JMenu menu;
+	private JMenuItem menuItem;
+	private JMenuItem menuSave;
+	private JMenuItem menuItemStartCompetition;
+	private JMenuItem menuItemStopCompetition;
 	
 	// Constructor
 	public CompetitionFrame(final CompetitionController controller) {
 		this.controller = controller;
 		
 		// Window setup
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setIconImage(ResourcesLoader.getImage("icon.png"));
 		setTitle(Application.NAME + " - " + controller.getCompetition().getName() + " @ " + controller.getCompetition().getLocation());
 		setSize(WINDOW_SIZE);
@@ -81,6 +100,227 @@ public class CompetitionFrame extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
+		
+		// Menu
+		menuBar = new JMenuBar();
+		setJMenuBar(menuBar);
+				
+		// Menu : File
+		menu = new JMenu("Fichier");
+		menu.setMnemonic(KeyEvent.VK_F);
+		menuBar.add(menu);
+		
+		menuItem = new JMenuItem("Nouveau");
+		menuItem.setMnemonic(KeyEvent.VK_N);
+		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, KeyEvent.CTRL_DOWN_MASK));
+		menu.add(menuItem);
+		menuItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent event) {
+				if (!Competition.dataIsUpdated()) {
+					int choice = JOptionPane.showConfirmDialog(CompetitionFrame.this, "Êtes-vous sûr de vouloir fermer cette compétition alors qu'elle n'est pas sauvegardée? Dans ce cas, les modifications ne seront pas prises en compte.", "Fermer sans sauvegarder?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+					
+					if (choice == JOptionPane.YES_OPTION) {
+						dispose();
+						controller.closeArrivalCaptureFrame();
+						controller.getFrontController().openNewCompetitionFrame();
+					}
+				}
+				
+				else {
+					dispose();
+					controller.closeArrivalCaptureFrame();
+					controller.getFrontController().openNewCompetitionFrame();
+				}
+				
+			}
+		});
+		
+		menuItem = new JMenuItem("Ouvrir");
+		menuItem.setMnemonic(KeyEvent.VK_O);
+		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.CTRL_DOWN_MASK));
+		menu.add(menuItem);
+		menuItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent event) {
+				if (!Competition.dataIsUpdated()) {
+					int choice = JOptionPane.showConfirmDialog(CompetitionFrame.this, "Êtes-vous sûr de vouloir fermer cette compétition alors qu'elle n'est pas sauvegardée? Dans ce cas, les modifications ne seront pas prises en compte.", "Fermer sans sauvegarder?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+					
+					if (choice == JOptionPane.YES_OPTION) {
+						FileDialog dialog = new FileDialog(CompetitionFrame.this, "Charger une compétition", FileDialog.LOAD);
+						dialog.setFilenameFilter(new FilenameFilter() {
+							@Override
+							public boolean accept(File directory, String fileName) {
+								if (fileName.matches(".+[.]jog"))
+									return true;
+								else
+									return false;
+							}
+						});
+						
+						dialog.setVisible(true);
+						
+						if (!(dialog.getDirectory() + dialog.getFile()).equals("nullnull")) {
+							dispose();
+							controller.closeArrivalCaptureFrame();
+							controller.getFrontController().openCompetition(dialog.getDirectory() + dialog.getFile());
+						}
+					}
+				}
+				
+				else {
+					FileDialog dialog = new FileDialog(CompetitionFrame.this, "Charger une compétition", FileDialog.LOAD);
+					dialog.setFilenameFilter(new FilenameFilter() {
+						@Override
+						public boolean accept(File directory, String fileName) {
+							if (fileName.matches(".+[.]jog"))
+								return true;
+							else
+								return false;
+						}
+					});
+					
+					dialog.setVisible(true);
+					
+					if (!(dialog.getDirectory() + dialog.getFile()).equals("nullnull")) {
+						dispose();
+						controller.closeArrivalCaptureFrame();
+						controller.getFrontController().openCompetition(dialog.getDirectory() + dialog.getFile());
+					}
+				}
+			}
+		});
+		
+		menuSave = new JMenuItem("Sauvegarder");
+		menuSave.setMnemonic(KeyEvent.VK_S);
+		menuSave.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK));
+		menu.add(menuSave);
+		menuSave.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent event) {
+				if (savePath == null) {
+				
+					FileDialog dialog = new FileDialog(CompetitionFrame.this, "Enregistrer la compétition sous...", FileDialog.SAVE);
+					dialog.setVisible(true);
+					
+					savePath = dialog.getDirectory() + dialog.getFile() + ".jog";
+					
+					if (savePath.equals("nullnull.jog"))
+						savePath = dialog.getDirectory() + "competition.jog";
+				}
+				
+				controller.saveCompetition(savePath);
+				JOptionPane.showMessageDialog(CompetitionFrame.this, "La compétition a bien été sauvegardée!", "Compétition sauvegardée!", JOptionPane.INFORMATION_MESSAGE);
+				Competition.notifyDataUpdated();
+				disableSaveFunction();
+			}
+		});
+		
+		menuItem = new JMenuItem("Sauvegarder sous...");
+		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK + KeyEvent.SHIFT_DOWN_MASK));
+		menu.add(menuItem);
+		menuItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent event) {
+				FileDialog dialog = new FileDialog(CompetitionFrame.this, "Enregistrer la compétition sous...", FileDialog.SAVE);
+				dialog.setVisible(true);
+				
+				String path = dialog.getDirectory() + dialog.getFile() + ".jog";
+				
+				if (!path.equals("nullnull.jog")) {
+					controller.saveCompetition(dialog.getDirectory() + dialog.getFile() + ".jog");
+					JOptionPane.showMessageDialog(CompetitionFrame.this, "La compétition a bien été sauvegardée!", "Compétition sauvegardée", JOptionPane.INFORMATION_MESSAGE);
+				}
+			}
+		});
+		
+		menu.addSeparator();
+		
+		menuItem = new JMenuItem("Fermer");
+		menuItem.setMnemonic(KeyEvent.VK_F);
+		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F, KeyEvent.CTRL_DOWN_MASK));
+		menu.add(menuItem);
+		menuItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent event) {
+				if (!Competition.dataIsUpdated()) {
+					int choice = JOptionPane.showConfirmDialog(CompetitionFrame.this, "Êtes-vous sûr de vouloir fermer cette compétition alors qu'elle n'est pas sauvegardée? Dans ce cas, les modifications ne seront pas prises en compte.", "Fermer sans sauvegarder?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+					
+					if (choice == JOptionPane.YES_OPTION) {
+						dispose();
+						controller.getFrontController().openHomeFrame();
+						controller.closeArrivalCaptureFrame();
+					}
+				}
+				
+				else {
+					dispose();
+					controller.getFrontController().openHomeFrame();
+				}
+			}
+		});
+		
+		menuItem = new JMenuItem("Quitter");
+		menuItem.setMnemonic(KeyEvent.VK_Q);
+		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, KeyEvent.CTRL_DOWN_MASK));
+		menu.add(menuItem);
+		menuItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent event) {
+				if (!Competition.dataIsUpdated()) {
+					int choice = JOptionPane.showConfirmDialog(CompetitionFrame.this, "Êtes-vous sûr de vouloir quitter l'application alors que la compétition n'est pas sauvegardée? Dans ce cas, les modifications ne seront pas prises en compte.", "Quitter sans sauvegarder?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+					
+					if (choice == JOptionPane.YES_OPTION) {
+						dispose();
+						System.exit(0);
+					}
+				}
+				
+				else {
+					dispose();
+					System.exit(0);
+				}
+			}
+		});
+		
+		// Menu : Competition
+		menu = new JMenu("Compétition");
+		menu.setMnemonic(KeyEvent.VK_C);
+		menuBar.add(menu);
+		
+		menuItemStartCompetition = new JMenuItem("Démarrer");
+		menuItemStartCompetition.setMnemonic(KeyEvent.VK_D);
+		menuItemStartCompetition.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_D, KeyEvent.CTRL_DOWN_MASK + KeyEvent.SHIFT_DOWN_MASK));
+		menu.add(menuItemStartCompetition);
+		menuItemStartCompetition.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent event) {
+				controller.startCompetition();
+			}
+		});
+		
+		menuItemStopCompetition = new JMenuItem("Arrêter");
+		menuItemStopCompetition.setEnabled(false);
+		menuItemStopCompetition.setMnemonic(KeyEvent.VK_A);
+		menuItemStopCompetition.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, KeyEvent.CTRL_DOWN_MASK + KeyEvent.SHIFT_DOWN_MASK));
+		menu.add(menuItemStopCompetition);
+		menuItemStopCompetition.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent event) {
+				if (JOptionPane.showConfirmDialog(CompetitionFrame.this, "Êtes-vous sûr de vouloir mettre fin à la compétition? Cela sera irreversible.", Application.NAME + " - Arrêter la compétition?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION) controller.stopCompetition();
+			}
+		});
+		
+		// Menu : Helo
+		menu = new JMenu("?");
+		menu.setMnemonic(KeyEvent.VK_H);
+		menuBar.add(menu);
+		
+		menuItem = new JMenuItem("À propos...");
+		menuItem.setMnemonic(KeyEvent.VK_A);
+		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, KeyEvent.CTRL_DOWN_MASK + KeyEvent.SHIFT_DOWN_MASK));
+		menu.add(menuItem);
+		
 		
 		// Competition panel
 		pnlCompetition = new JPanel();
@@ -204,14 +444,53 @@ public class CompetitionFrame extends JFrame {
 					
 					int choice =  JOptionPane.showConfirmDialog(CompetitionFrame.this, "Êtes-vous sûr de vouloir supprimer le participant '" + raceToDelete.getJogger().getName() + "'?", Application.NAME + " - Suppression de la sélection", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 					
-					if (choice == JOptionPane.YES_OPTION)
+					if (choice == JOptionPane.YES_OPTION) {
 						controller.removeRace(raceToDelete);
+						Competition.notifyDataChanged();
+						enableSaveFunction();
+					}
 				}
 				
 				else
 					JOptionPane.showMessageDialog(CompetitionFrame.this, "Aucun participant n'a été sélectionné pour être supprimé.", Application.NAME + " - Suppression impossible", JOptionPane.ERROR_MESSAGE);
 			}
 		});
+		
+		// Fermeture
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent event) {
+				if (!Competition.dataIsUpdated()) {
+					int choice = JOptionPane.showConfirmDialog(CompetitionFrame.this, "Êtes-vous sûr de vouloir quitter l'application alors que la compétition n'est pas sauvegardée? Dans ce cas, les modifications ne seront pas prises en compte.", "Quitter sans sauvegarder?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+					
+					if (choice == JOptionPane.YES_OPTION) {
+						dispose();
+						System.exit(0);
+					}
+				}
+				
+				else {
+					dispose();
+					System.exit(0);
+				}
+			}
+		});
+		
+		// Restore competition
+		if (controller.getCompetition().getStatus() == CompetitionStatus.RUNNING) {
+			startCompetition();
+			controller.openArrivalCaptureFrame();
+			disableSaveFunction();
+		}
+		
+		if (controller.getCompetition().getStatus() == CompetitionStatus.FINISHED) {
+			btnStartandStop.setText("Générer le PDF");
+			btnStartandStop.setToolTipText("Obtenir le classement au format PDF");
+			btnEditJogger.setEnabled(true);
+			menuItemStartCompetition.setEnabled(false);
+			menuItemStopCompetition.setEnabled(false);
+			disableSaveFunction();
+		}
 	}
 	
 	// Method : Update table
@@ -227,6 +506,8 @@ public class CompetitionFrame extends JFrame {
 		btnAddJogger.setEnabled(false);
 		btnEditJogger.setEnabled(false);
 		btnDeleteJogger.setEnabled(false);
+		menuItemStartCompetition.setEnabled(false);
+		menuItemStopCompetition.setEnabled(true);
 		
 		// Update timer
 		timer = new Timer();;
@@ -238,6 +519,8 @@ public class CompetitionFrame extends JFrame {
 		}, new Date(), 1000);
 		
 		updateTable();
+		Competition.notifyDataChanged();
+		enableSaveFunction();
 	}
 	
 	// Method : Stop competition
@@ -249,7 +532,20 @@ public class CompetitionFrame extends JFrame {
 		btnStartandStop.setText("Générer le PDF");
 		btnStartandStop.setToolTipText("Obtenir le classement au format PDF");
 		btnEditJogger.setEnabled(true);
+		menuItemStopCompetition.setEnabled(false);
 		
 		updateTable();
+		Competition.notifyDataChanged();
+		enableSaveFunction();
+	}
+	
+	// Method : Enable save function
+	public void enableSaveFunction() {
+		menuSave.setEnabled(true);
+	}
+	
+	// Method : Disable save function
+	public void disableSaveFunction() {
+		menuSave.setEnabled(false);
 	}
 }

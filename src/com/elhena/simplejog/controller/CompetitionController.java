@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.Date;
 
 import com.elhena.simplejog.controller.model.Controller;
+import com.elhena.simplejog.io.CompetitionWriter;
 import com.elhena.simplejog.model.Competition;
 import com.elhena.simplejog.model.CompetitionStatus;
 import com.elhena.simplejog.model.Race;
@@ -44,9 +45,7 @@ public class CompetitionController extends Controller {
 	
 	// Method : Open competition frame
 	public void openFrame() {
-		if (frame == null)
-			frame = new CompetitionFrame(this);
-		
+		frame = new CompetitionFrame(this);
 		frame.setVisible(true);
 	}
 	
@@ -193,5 +192,13 @@ public class CompetitionController extends Controller {
 		
 		if (error == 0)
 			stopCompetition();
+	}
+	
+	// Method : Save competition
+	public void saveCompetition(String path) {
+		CompetitionWriter writer = new CompetitionWriter(path);
+		writer.write(getCompetition());
+		writer.close();
+		Log.i("Competiton '" + getCompetition().getName() + "' has been saved in '" + path + "' file");
 	}
 }

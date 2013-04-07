@@ -4,11 +4,15 @@
 
 package com.elhena.simplejog.model;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class Race implements Comparable<Race> {
+public class Race implements Comparable<Race>, Serializable {
 
+	// Constants
+	private static final long serialVersionUID = 1L;
+	
 	// Attributes
 	private int number;
 	private Competition competition;
