@@ -42,6 +42,7 @@ import javax.swing.border.TitledBorder;
 
 import com.elhena.simplejog.app.model.Application;
 import com.elhena.simplejog.controller.CompetitionController;
+import com.elhena.simplejog.io.CompetitionPDFExporter;
 import com.elhena.simplejog.model.Competition;
 import com.elhena.simplejog.model.CompetitionStatus;
 import com.elhena.simplejog.model.Race;
@@ -118,7 +119,7 @@ public class CompetitionFrame extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent event) {
 				if (!Competition.dataIsUpdated()) {
-					int choice = JOptionPane.showConfirmDialog(CompetitionFrame.this, "Êtes-vous sûr de vouloir fermer cette compétition alors qu'elle n'est pas sauvegardée? Dans ce cas, les modifications ne seront pas prises en compte.", "Fermer sans sauvegarder?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+					int choice = JOptionPane.showConfirmDialog(CompetitionFrame.this, "Êtes-vous sûr de vouloir fermer cette compétition non sauvegardée?", "Fermer sans sauvegarder?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 					
 					if (choice == JOptionPane.YES_OPTION) {
 						dispose();
@@ -144,10 +145,10 @@ public class CompetitionFrame extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent event) {
 				if (!Competition.dataIsUpdated()) {
-					int choice = JOptionPane.showConfirmDialog(CompetitionFrame.this, "Êtes-vous sûr de vouloir fermer cette compétition alors qu'elle n'est pas sauvegardée? Dans ce cas, les modifications ne seront pas prises en compte.", "Fermer sans sauvegarder?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+					int choice = JOptionPane.showConfirmDialog(CompetitionFrame.this, "Êtes-vous sûr de vouloir fermer cette compétition non sauvegardée", "Fermer sans sauvegarder?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 					
 					if (choice == JOptionPane.YES_OPTION) {
-						FileDialog dialog = new FileDialog(CompetitionFrame.this, "Charger une compétition", FileDialog.LOAD);
+						FileDialog dialog = new FileDialog(CompetitionFrame.this, "Charger une compétition...", FileDialog.LOAD);
 						dialog.setFilenameFilter(new FilenameFilter() {
 							@Override
 							public boolean accept(File directory, String fileName) {
@@ -169,7 +170,7 @@ public class CompetitionFrame extends JFrame {
 				}
 				
 				else {
-					FileDialog dialog = new FileDialog(CompetitionFrame.this, "Charger une compétition", FileDialog.LOAD);
+					FileDialog dialog = new FileDialog(CompetitionFrame.this, "Charger une compétition...", FileDialog.LOAD);
 					dialog.setFilenameFilter(new FilenameFilter() {
 						@Override
 						public boolean accept(File directory, String fileName) {
@@ -244,7 +245,7 @@ public class CompetitionFrame extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent event) {
 				if (!Competition.dataIsUpdated()) {
-					int choice = JOptionPane.showConfirmDialog(CompetitionFrame.this, "Êtes-vous sûr de vouloir fermer cette compétition alors qu'elle n'est pas sauvegardée? Dans ce cas, les modifications ne seront pas prises en compte.", "Fermer sans sauvegarder?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+					int choice = JOptionPane.showConfirmDialog(CompetitionFrame.this, "Êtes-vous sûr de vouloir fermer cette compétition non sauvegardée?", "Fermer sans sauvegarder?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 					
 					if (choice == JOptionPane.YES_OPTION) {
 						dispose();
@@ -268,7 +269,7 @@ public class CompetitionFrame extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent event) {
 				if (!Competition.dataIsUpdated()) {
-					int choice = JOptionPane.showConfirmDialog(CompetitionFrame.this, "Êtes-vous sûr de vouloir quitter l'application alors que la compétition n'est pas sauvegardée? Dans ce cas, les modifications ne seront pas prises en compte.", "Quitter sans sauvegarder?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+					int choice = JOptionPane.showConfirmDialog(CompetitionFrame.this, "Êtes-vous sûr de vouloir quitter l'application alors que la compétition n'est pas sauvegardée?", "Quitter sans sauvegarder?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 					
 					if (choice == JOptionPane.YES_OPTION) {
 						dispose();
@@ -311,7 +312,7 @@ public class CompetitionFrame extends JFrame {
 			}
 		});
 		
-		// Menu : Helo
+		// Menu : Help
 		menu = new JMenu("?");
 		menu.setMnemonic(KeyEvent.VK_H);
 		menuBar.add(menu);
@@ -359,6 +360,7 @@ public class CompetitionFrame extends JFrame {
 				switch(controller.getCompetition().getStatus()) {
 					case STANDBY: controller.startCompetition(); break;
 					case RUNNING: if (JOptionPane.showConfirmDialog(CompetitionFrame.this, "Êtes-vous sûr de vouloir mettre fin à la compétition? Cela sera irreversible.", Application.NAME + " - Arrêter la compétition?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION) controller.stopCompetition(); break;
+					case FINISHED: generatePDF(); break;
 					default: break;
 				}	
 			}
@@ -538,7 +540,7 @@ public class CompetitionFrame extends JFrame {
 		timer.cancel();
 		
 		// Enable buttons
-		btnStartandStop.setText("Générer le PDF");
+		btnStartandStop.setText("Générer le classement");
 		btnStartandStop.setToolTipText("Obtenir le classement au format PDF");
 		btnEditJogger.setEnabled(true);
 		menuItemStopCompetition.setEnabled(false);
@@ -556,5 +558,27 @@ public class CompetitionFrame extends JFrame {
 	// Method : Disable save function
 	public void disableSaveFunction() {
 		menuSave.setEnabled(false);
+	}
+	
+	// Method : Generate PDF file
+	public void generatePDF() {
+		FileDialog dialog = new FileDialog(this, "Exporter la compétition en PDF...", FileDialog.SAVE);
+		dialog.setFilenameFilter(new FilenameFilter() {
+			@Override
+			public boolean accept(File dir, String fileName) {
+				if (fileName.matches(".+[.]pdf"))
+					return true;
+				else
+					return false;
+			}
+		});
+		
+		dialog.setVisible(true);
+		
+		if (dialog.getDirectory() != null && dialog.getFile() != null) {
+			CompetitionPDFExporter exporter = new CompetitionPDFExporter(dialog.getDirectory() + dialog.getFile() + ".pdf");
+			exporter.generate(controller.getCompetition());
+			JOptionPane.showMessageDialog(this, "Le classement a bien été exporté!", "Classement exporté en PDF", JOptionPane.INFORMATION_MESSAGE);
+		}
 	}
 }

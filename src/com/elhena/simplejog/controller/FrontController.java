@@ -7,6 +7,7 @@ package com.elhena.simplejog.controller;
 import com.elhena.simplejog.app.splash.Splash;
 import com.elhena.simplejog.io.CompetitionReader;
 import com.elhena.simplejog.model.Competition;
+import com.elhena.simplejog.util.logger.Log;
 import com.elhena.simplejog.view.CompetitionFrame;
 
 public class FrontController {
@@ -72,5 +73,6 @@ public class FrontController {
 		openCompetitionFrame(reader.read());
 		reader.close();
 		CompetitionFrame.savePath = path;
+		Log.i("New competition opened");
 	}
  }
