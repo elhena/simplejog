@@ -79,16 +79,16 @@ public class HomeFrame extends JFrame {
 		pnlChoiceLoad.setLayout(new BoxLayout(pnlChoiceLoad, BoxLayout.Y_AXIS));
 		pnlChoice.add(pnlChoiceLoad);
 		btnLoad = new JButton(new ImageIcon(ResourcesLoader.getImage("home_load.png")));
-		btnLoad.setToolTipText("Charger une compétition existante");
+		btnLoad.setToolTipText("Charger une comp√©tition existante");
 		btnLoad.setBorder(new EmptyBorder(5, 5, 5, 5));
 		pnlChoiceLoad.add(btnLoad);
-		pnlChoiceLoad.add(new JLabel("Charger une compétition"));
+		pnlChoiceLoad.add(new JLabel("Charger une comp√©tition"));
 		
 		// Action : Load competition
 		btnLoad.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent event) {
-				FileDialog dialog = new FileDialog(HomeFrame.this, "Charger une compétition", FileDialog.LOAD);
+				FileDialog dialog = new FileDialog(HomeFrame.this, "Charger une comp√©tition", FileDialog.LOAD);
 				dialog.setFilenameFilter(new FilenameFilter() {
 					@Override
 					public boolean accept(File directory, String fileName) {
@@ -114,10 +114,10 @@ public class HomeFrame extends JFrame {
 		pnlChoiceNew.setLayout(new BoxLayout(pnlChoiceNew, BoxLayout.Y_AXIS));
 		pnlChoice.add(pnlChoiceNew);
 		btnNew = new JButton(new ImageIcon(ResourcesLoader.getImage("home_new.png")));
-		btnNew.setToolTipText("Créer une nouvelle compétition");
+		btnNew.setToolTipText("Cr√©er une nouvelle comp√©tition");
 		btnNew.setBorder(new EmptyBorder(5, 5, 5, 5));
 		pnlChoiceNew.add(btnNew);
-		pnlChoiceNew.add(new JLabel("Créer une compétition"));
+		pnlChoiceNew.add(new JLabel("Cr√©er une comp√©tition"));
 		
 		// Action : New competition
 		btnNew.addActionListener(new ActionListener() {

@@ -17,7 +17,7 @@ public class RaceTableModel extends AbstractTableModel {
 	private static final long serialVersionUID = 1L;
 	
 	// Attributes
-	private final String[] columns = new String[] {"Numéro", "Nom", "Départ", "Arrivée", "Durée"};
+	private final String[] columns = new String[] {"Num√©ro", "Nom", "D√©part", "Arriv√©e", "Dur√©e"};
 	private Competition competition;
 	
 	

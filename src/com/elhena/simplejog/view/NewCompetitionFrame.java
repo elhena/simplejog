@@ -31,7 +31,7 @@ public class NewCompetitionFrame extends JFrame {
 
 	// Constants
 	private static final long serialVersionUID = 1L;
-	private static final String WINDOW_TITLE = "Nouvelle compétition";
+	private static final String WINDOW_TITLE = "Nouvelle comp√©tition";
 	private static final Dimension WINDOW_SIZE = new Dimension(400, 160);
 	
 	// Attributes
@@ -100,7 +100,7 @@ public class NewCompetitionFrame extends JFrame {
 			}
 		});
 		
-		btnCreate = new JButton("Créer");
+		btnCreate = new JButton("Cr√©er");
 		btnCreate.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent event) {
@@ -117,10 +117,10 @@ public class NewCompetitionFrame extends JFrame {
 		ArrayList<String> errors = new ArrayList<String>();
 		
 		if (tfdFormName.getText().length() < 2)
-			errors.add("Le nom de l'évènement ne peut être vide et doit être composé d'au moins deux caractères");
+			errors.add("Le nom de l'√©v√®nement ne peut √™tre vide et doit √™tre compos√© d'au moins deux caract√®res");
 		
 		if (tfdFormLocation.getText().length() < 2)
-			errors.add("Le lieu de l'évènement doit être obligatoirement spécifié et contenir au moins deux caractères");
+			errors.add("Le lieu de l'√©v√®nement doit √™tre obligatoirement sp√©cifi√© et contenir au moins deux caract√®res");
 		
 		if (errors.size() == 0) {
 			Competition competition = new Competition(tfdFormName.getText(), tfdFormLocation.getText());
@@ -134,7 +134,7 @@ public class NewCompetitionFrame extends JFrame {
 			for (String error : errors)
 				message += "- " + error + ".\n";
 			
-			JOptionPane.showMessageDialog(this, message, Application.NAME + " - Informations incomplètes", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(this, message, Application.NAME + " - Informations incompl√®tes", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 }

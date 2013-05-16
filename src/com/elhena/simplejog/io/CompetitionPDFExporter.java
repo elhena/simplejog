@@ -10,6 +10,7 @@ import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 
 import com.elhena.simplejog.app.model.Application;
 import com.elhena.simplejog.model.Competition;
@@ -56,15 +57,15 @@ public class CompetitionPDFExporter {
 	
 	public void generate(Competition competition) {
 		try {
-			document.addTitle(competition.getName() + " : résultats");
+			document.addTitle(competition.getName() + " : r√©sultats");
 			
 			document.open();
-			document.add(new Phrase(competition.getName() + " @ " + competition.getLocation() + " - Départ: " + new SimpleDateFormat("HH:mm:ss").format(competition.getStartTime())));
+			document.add(new Phrase(competition.getName() + " @ " + competition.getLocation() + " - D√©part: " + new SimpleDateFormat("HH:mm:ss").format(competition.getStartTime())));
 			document.add(Chunk.NEWLINE);
 			document.add(new Chunk(new LineSeparator()));
 			document.add(Chunk.NEWLINE);
 			document.add(Chunk.NEWLINE);
-			document.add(new Phrase("Classement général (" + competition.getRaces().size() + " participants)"));
+			document.add(new Phrase("Classement g√©n√©ral (" + competition.getRaces().size() + " participants)"));
 			document.add(Chunk.NEWLINE);
 			
 			PdfPTable table = new PdfPTable(4);
@@ -74,7 +75,7 @@ public class CompetitionPDFExporter {
 			table.addCell("Place");
 			table.addCell("Nom");
 			table.addCell("Heure de fin");
-			table.addCell("Durée");
+			table.addCell("Dur√©e");
 			
 			// Sort of races
 			Collections.sort(competition.getRaces(), new Comparator<Race>() {
@@ -88,13 +89,13 @@ public class CompetitionPDFExporter {
 				table.addCell(new Integer(rank).toString());
 				table.addCell(r.getJogger().getName() + " (" + r.getNumber() + ")");
 				table.addCell(new SimpleDateFormat("HH:mm:ss").format(r.getEndTime()));
-				table.addCell(new SimpleDateFormat("HH:mm:ss").format(r.getDuration()));
+				table.addCell(new SimpleDateFormat("HH:mm:ss").format(new Date(r.getDuration().getTime() - (1000 * 60 * 60))));
 				rank++;
 			}
 			
 			document.add(table);
 			document.add(Chunk.NEWLINE);
-			document.add(new Phrase("Géré à l'aide de " + Application.NAME + " " + Application.VERSION));
+			document.add(new Phrase("G√©r√© √† l'aide de " + Application.NAME + " " + Application.VERSION));
 			document.add(Chunk.NEWLINE);
 			document.add(new Phrase(Application.COPYRIGHT));
 			document.close();

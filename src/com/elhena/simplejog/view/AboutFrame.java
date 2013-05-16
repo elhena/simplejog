@@ -68,13 +68,13 @@ public class AboutFrame extends JDialog {
 		
 		// Informations
 		pnlContent.add(new JLabel("Version: " + Application.VERSION));
-		pnlContent.add(new JLabel("Date de mise à jour: " + Application.LAST_UPDATE));
+		pnlContent.add(new JLabel("Date de mise √† jour: " + Application.LAST_UPDATE));
 		pnlContent.add(new JLabel("Auteur: Fabien Vanden Bulck <fabien@elhena.com>"));
 		pnlContent.add(new JLabel("Sur demande de: Nicolas Lambert (HF011 Pionniers)"));
-		pnlContent.add(new JLabel("Dédiée à: scouts et autres mouvements de jeunesse"));
+		pnlContent.add(new JLabel("D√©di√©e √†: scouts et autres mouvements de jeunesse"));
 		pnlContent.add(new JLabel("Page: " + Application.WEBPAGE));
 		pnlContent.add(new JLabel("Site Internet: " + Application.WEBSITE));
 		pnlContent.add(new JLabel("Copyright: " + Application.COPYRIGHT));
-		pnlContent.add(new JLabel("License: Licence publique générale GNU"));
+		pnlContent.add(new JLabel("License: Publique g√©n√©rale GNU"));
 	}
 }

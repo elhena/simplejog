@@ -13,7 +13,7 @@ public class Application {
 	public static final String VERSION = "0.1";
 	public static final String LAST_UPDATE = "08/04/2013";
 	public static final String WEBPAGE = "https://github.com/elhena/simplejog";
-	public static final String COPYRIGHT = "© 2013 Fabien Vanden Bulck";
+	public static final String COPYRIGHT = "(C) 2013 Fabien Vanden Bulck";
 	public static final String WEBSITE = "http://www.elhena.com";
 	
 	// Attributes

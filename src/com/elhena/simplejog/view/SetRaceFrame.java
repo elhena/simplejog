@@ -101,7 +101,7 @@ public class SetRaceFrame extends JDialog {
 		contentPane.add(pnlForm, BorderLayout.CENTER);
 		
 		// Form : Number
-		lblFormNumber = new JLabel("Numéro: ");
+		lblFormNumber = new JLabel("Num√©ro: ");
 		spnFormNumber = new JSpinner();
 		spnFormNumber.setValue(((CompetitionController) controller.getParentController()).getNextNumberAvailable());
 		pnlForm.add(lblFormNumber, "cell 0 0");
@@ -139,7 +139,7 @@ public class SetRaceFrame extends JDialog {
 		contentPane.add(pnlControls, BorderLayout.SOUTH);
 		
 		btnCancel = new JButton("Annuler");
-		btnCancel.setToolTipText("Annuler l'opération et revenir à l'écran de compétition");
+		btnCancel.setToolTipText("Annuler l'op√©ration et revenir √† l'√©cran de comp√©tition");
 		pnlControls.add(btnCancel);
 		btnCancel.addActionListener(new ActionListener() {
 			@Override
@@ -187,15 +187,15 @@ public class SetRaceFrame extends JDialog {
 		if (!((CompetitionController) controller.getParentController()).numberIsAvailable((Integer) spnFormNumber.getValue()) || ((Integer) spnFormNumber.getValue()) < 1) {
 			
 			if (newRace)
-				errors.add("Le numéro saisie n'est pas disponible");
+				errors.add("Le num√©ro saisie n'est pas disponible");
 			
 			if (!(newRace || ((Integer) spnFormNumber.getValue()) == controller.getRace().getNumber()))
-				errors.add("Le numéro saisi n'est pas disponible");
+				errors.add("Le num√©ro saisi n'est pas disponible");
 		}
 		
 		// Name check
 		if (tfdFormName.getText().length() < 4)
-			errors.add("Le nom du participant doit contenir au moins 4 caractères");
+			errors.add("Le nom du participant doit contenir au moins 4 caract√®res");
 		
 		// Birthday check
 		if (!tfdFormBirthday.getText().matches("[0-9]{2}/[0-9]{2}/[0-9]{4}"))
@@ -261,7 +261,7 @@ public class SetRaceFrame extends JDialog {
 			for (String error: errors)
 				message += "- " + error + ".\n";
 			
-			JOptionPane.showMessageDialog(this, message, Application.NAME + " - " + "Informations incomplètes", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(this, message, Application.NAME + " - " + "Informations incompl√®tes", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 }

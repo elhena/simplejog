@@ -70,7 +70,7 @@ public class ViewRaceFrame extends JDialog {
 		pnlInfos.setLayout(new BoxLayout(pnlInfos, BoxLayout.Y_AXIS));
 		contentPane.add(pnlInfos, BorderLayout.CENTER);
 		
-		lblNumber = new JLabel("Numéro: " + controller.getRace().getNumber());
+		lblNumber = new JLabel("Num√©ro: " + controller.getRace().getNumber());
 		lblName = new JLabel("Nom: " + controller.getRace().getJogger().getName());
 		lblBirthday = new JLabel("Date de naissance: " + new SimpleDateFormat("dd/MM/yyyy").format(controller.getRace().getJogger().getBirthday()));
 		lblSex = new JLabel("Sexe: " + controller.getRace().getJogger().getSexAsString());

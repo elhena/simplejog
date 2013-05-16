@@ -33,7 +33,7 @@ public class ArrivalCaptureFrame extends JFrame {
 
 	// Constants
 	private static final long serialVersionUID = 1L;
-	private static final String WINDOW_TITLE = "Capture à l'arrivée";
+	private static final String WINDOW_TITLE = "Capture √† l'arriv√©e";
 	private static final Dimension WINDOW_SIZE = new Dimension(200, 220);
 	
 	// Attributes
@@ -75,7 +75,7 @@ public class ArrivalCaptureFrame extends JFrame {
 		pnlCapture.setLayout(new BoxLayout(pnlCapture, BoxLayout.Y_AXIS));
 		contentPane.add(pnlCapture, BorderLayout.CENTER);
 		
-		lblInstruction = new JLabel("Numéro: ");
+		lblInstruction = new JLabel("Num√©ro: ");
 		lblInstruction.setAlignmentX(Component.CENTER_ALIGNMENT);
 		pnlCapture.add(lblInstruction);
 		
@@ -96,7 +96,7 @@ public class ArrivalCaptureFrame extends JFrame {
 				if (tfdCapture.getText().matches("[0-9]+"))
 					arrival(Integer.parseInt(tfdCapture.getText()));
 				else
-					JOptionPane.showMessageDialog(ArrivalCaptureFrame.this, "Le champ ne tolère qu'un nombre.", Application.NAME + " - Erreur de saisie", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(ArrivalCaptureFrame.this, "Le champ ne tol√®re qu'un nombre.", Application.NAME + " - Erreur de saisie", JOptionPane.ERROR_MESSAGE);
 ;			}
 		});
 		
@@ -110,7 +110,7 @@ public class ArrivalCaptureFrame extends JFrame {
 					}
 					
 					else
-						JOptionPane.showMessageDialog(ArrivalCaptureFrame.this, "Le champ ne tolère qu'un nombre.", Application.NAME + " - Erreur de saisie", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(ArrivalCaptureFrame.this, "Le champ ne tol√®re qu'un nombre.", Application.NAME + " - Erreur de saisie", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});
@@ -121,7 +121,7 @@ public class ArrivalCaptureFrame extends JFrame {
 		pnlPreviousCapture.setLayout(new BoxLayout(pnlPreviousCapture, BoxLayout.Y_AXIS));
 		contentPane.add(pnlPreviousCapture, BorderLayout.SOUTH);
 		
-		lblPreviousCapture = new JLabel("Arrivée précédente: ");
+		lblPreviousCapture = new JLabel("Arriv√©e pr√©c√©dente: ");
 		lblPreviousCapture.setAlignmentX(Component.CENTER_ALIGNMENT);
 		lblPreviousCaptureName = new JLabel();
 		lblPreviousCaptureName.setAlignmentX(Component.CENTER_ALIGNMENT);
