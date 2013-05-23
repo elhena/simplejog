@@ -11,6 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.ResourceBundle;
 
 import com.elhena.simplejog.app.model.Application;
 import com.elhena.simplejog.model.Competition;
@@ -27,6 +28,9 @@ import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.text.pdf.draw.LineSeparator;
 
 public class CompetitionPDFExporter {
+	
+	// Constants
+	private static final ResourceBundle RESOURCES = ResourceBundle.getBundle(CompetitionPDFExporter.class.getName());
 
 	// Attributes
 	private FileOutputStream output;
@@ -57,25 +61,25 @@ public class CompetitionPDFExporter {
 	
 	public void generate(Competition competition) {
 		try {
-			document.addTitle(competition.getName() + " : résultats");
+			document.addTitle(competition.getName() + " : " + RESOURCES.getString("results"));
 			
 			document.open();
-			document.add(new Phrase(competition.getName() + " @ " + competition.getLocation() + " - Départ: " + new SimpleDateFormat("HH:mm:ss").format(competition.getStartTime())));
+			document.add(new Phrase(competition.getName() + " @ " + competition.getLocation() + " - " + RESOURCES.getString("departure") + ": " + new SimpleDateFormat("HH:mm:ss").format(competition.getStartTime())));
 			document.add(Chunk.NEWLINE);
 			document.add(new Chunk(new LineSeparator()));
 			document.add(Chunk.NEWLINE);
 			document.add(Chunk.NEWLINE);
-			document.add(new Phrase("Classement général (" + competition.getRaces().size() + " participants)"));
+			document.add(new Phrase(RESOURCES.getString("ranking") + " (" + competition.getRaces().size() + " participants)"));
 			document.add(Chunk.NEWLINE);
 			
 			PdfPTable table = new PdfPTable(4);
 			table.setWidthPercentage(100);
 			int rank = 1;
 			
-			table.addCell("Place");
-			table.addCell("Nom");
-			table.addCell("Heure de fin");
-			table.addCell("Durée");
+			table.addCell(RESOURCES.getString("rank"));
+			table.addCell(RESOURCES.getString("name"));
+			table.addCell(RESOURCES.getString("arrivalTime"));
+			table.addCell(RESOURCES.getString("duration"));
 			
 			// Sort of races
 			Collections.sort(competition.getRaces(), new Comparator<Race>() {
@@ -95,7 +99,7 @@ public class CompetitionPDFExporter {
 			
 			document.add(table);
 			document.add(Chunk.NEWLINE);
-			document.add(new Phrase("Géré à l'aide de " + Application.NAME + " " + Application.VERSION));
+			document.add(new Phrase(RESOURCES.getString("managedWith") + " " + Application.NAME + " " + Application.VERSION));
 			document.add(Chunk.NEWLINE);
 			document.add(new Phrase(Application.COPYRIGHT));
 			document.close();

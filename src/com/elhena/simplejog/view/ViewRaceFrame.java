@@ -10,6 +10,7 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
+import java.util.ResourceBundle;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -30,6 +31,7 @@ public class ViewRaceFrame extends JDialog {
 	private static final long serialVersionUID = 1L;
 	private static final String WINDOW_TITLE = Application.NAME + " - ";
 	private static final Dimension WINDOW_SIZE = new Dimension(400, 140);
+	private static final ResourceBundle RESOURCES = ResourceBundle.getBundle(ViewRaceFrame.class.getName());
 	
 	// Attributes
 	private ViewRaceController controller;
@@ -70,10 +72,10 @@ public class ViewRaceFrame extends JDialog {
 		pnlInfos.setLayout(new BoxLayout(pnlInfos, BoxLayout.Y_AXIS));
 		contentPane.add(pnlInfos, BorderLayout.CENTER);
 		
-		lblNumber = new JLabel("Numéro: " + controller.getRace().getNumber());
-		lblName = new JLabel("Nom: " + controller.getRace().getJogger().getName());
-		lblBirthday = new JLabel("Date de naissance: " + new SimpleDateFormat("dd/MM/yyyy").format(controller.getRace().getJogger().getBirthday()));
-		lblSex = new JLabel("Sexe: " + controller.getRace().getJogger().getSexAsString());
+		lblNumber = new JLabel(RESOURCES.getString("label.lblNumber") + ": " + controller.getRace().getNumber());
+		lblName = new JLabel(RESOURCES.getString("label.lblName") + ": " + controller.getRace().getJogger().getName());
+		lblBirthday = new JLabel(RESOURCES.getString("label.lblBirthday") + ": " + new SimpleDateFormat("dd/MM/yyyy").format(controller.getRace().getJogger().getBirthday()));
+		lblSex = new JLabel(RESOURCES.getString("label.lblSex") + ": " + controller.getRace().getJogger().getSexAsString());
 		pnlInfos.add(lblNumber);
 		pnlInfos.add(lblName);
 		pnlInfos.add(lblBirthday);
@@ -85,7 +87,7 @@ public class ViewRaceFrame extends JDialog {
 		pnlControls.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		contentPane.add(pnlControls, BorderLayout.SOUTH);
 		
-		btnClose = new JButton("Fermer");
+		btnClose = new JButton(RESOURCES.getString("button.btnClose"));
 		pnlControls.add(btnClose);
 		btnClose.addActionListener(new ActionListener() {
 			@Override

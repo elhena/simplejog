@@ -13,6 +13,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.ResourceBundle;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -42,9 +43,8 @@ public class SetRaceFrame extends JDialog {
 
 	// Constants
 	private static final long serialVersionUID = 1L;
-	private static String WINDOW_TITLE_NEW = "Ajouter un participant";
-	private static String WINDOW_TITLE_EDIT = "Modifier un participant";
 	private static final Dimension WINDOW_SIZE = new Dimension(400, 200);
+	private static final ResourceBundle RESOURCES = ResourceBundle.getBundle(SetRaceFrame.class.getName());
 	
 	// Attributes
 	private SetRaceController controller;
@@ -79,9 +79,9 @@ public class SetRaceFrame extends JDialog {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setIconImage(ResourcesLoader.getImage("icon.ong"));
 		if (newRace)
-			setTitle(Application.NAME + " - " + WINDOW_TITLE_NEW);
+			setTitle(Application.NAME + " - " + RESOURCES.getString("title.add"));
 		else
-			setTitle(Application.NAME + " - " + WINDOW_TITLE_EDIT);
+			setTitle(Application.NAME + " - " + RESOURCES.getString("title.edit"));
 		setSize(WINDOW_SIZE);
 		setMinimumSize(WINDOW_SIZE);
 		setResizable(false);
@@ -101,31 +101,31 @@ public class SetRaceFrame extends JDialog {
 		contentPane.add(pnlForm, BorderLayout.CENTER);
 		
 		// Form : Number
-		lblFormNumber = new JLabel("Numéro: ");
+		lblFormNumber = new JLabel(RESOURCES.getString("label.lblFormNumber") + ": ");
 		spnFormNumber = new JSpinner();
 		spnFormNumber.setValue(((CompetitionController) controller.getParentController()).getNextNumberAvailable());
 		pnlForm.add(lblFormNumber, "cell 0 0");
 		pnlForm.add(spnFormNumber, "cell 1 0, width :50:");
 		
 		// Form : Name
-		lblFormName = new JLabel("Nom: ");
+		lblFormName = new JLabel(RESOURCES.getString("label.lblFormName") + ": ");
 		tfdFormName = new JTextField();
 		tfdFormName.requestFocus();
 		pnlForm.add(lblFormName, "cell 0 1");
 		pnlForm.add(tfdFormName, "cell 1 1, width :340:");
 		
 		// Form : Birthday
-		lblFormBirthday = new JLabel("Date de naissance: ");
+		lblFormBirthday = new JLabel(RESOURCES.getString("label.lblFormBirthday") + ": ");
 		tfdFormBirthday = new JTextField(new SimpleDateFormat("dd/MM/yyyy").format(new Date()));
 		pnlForm.add(lblFormBirthday, "cell 0 2");
 		pnlForm.add(tfdFormBirthday, "cell 1 2, width :95:");
 		
 		// Form : Sex
-		lblFormSex = new JLabel("Sexe: ");
+		lblFormSex = new JLabel(RESOURCES.getString("label.lblFormSex") + ": ");
 		rbtnSex = new ButtonGroup();
-		rbtnSexMale = new JRadioButton("Homme");
+		rbtnSexMale = new JRadioButton(RESOURCES.getString("radio.rbtnSexMale"));
 		rbtnSexMale.setSelected(true);
-		rbtnSexFemale = new JRadioButton("Femme");
+		rbtnSexFemale = new JRadioButton(RESOURCES.getString("radio.rbtnSexFemale"));
 		rbtnSex.add(rbtnSexMale);
 		rbtnSex.add(rbtnSexFemale);
 		pnlForm.add(lblFormSex, "cell 0 3");
@@ -138,8 +138,8 @@ public class SetRaceFrame extends JDialog {
 		pnlControls.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		contentPane.add(pnlControls, BorderLayout.SOUTH);
 		
-		btnCancel = new JButton("Annuler");
-		btnCancel.setToolTipText("Annuler l'opération et revenir à l'écran de compétition");
+		btnCancel = new JButton(RESOURCES.getString("button.btnCancel"));
+		btnCancel.setToolTipText(RESOURCES.getString("button.btnCancel.tip"));
 		pnlControls.add(btnCancel);
 		btnCancel.addActionListener(new ActionListener() {
 			@Override
@@ -150,9 +150,9 @@ public class SetRaceFrame extends JDialog {
 		
 		btnEdit = new JButton();
 		if (newRace)
-			btnEdit.setText("Ajouter");
+			btnEdit.setText(RESOURCES.getString("button.btnEdit.add"));
 		else
-			btnEdit.setText("Modifier");
+			btnEdit.setText(RESOURCES.getString("button.btnEdit.edit"));
 		pnlControls.add(btnEdit);
 		btnEdit.addActionListener(new ActionListener() {
 			@Override
@@ -187,19 +187,19 @@ public class SetRaceFrame extends JDialog {
 		if (!((CompetitionController) controller.getParentController()).numberIsAvailable((Integer) spnFormNumber.getValue()) || ((Integer) spnFormNumber.getValue()) < 1) {
 			
 			if (newRace)
-				errors.add("Le numéro saisie n'est pas disponible");
+				errors.add(RESOURCES.getString("formError.number.noavailable"));
 			
 			if (!(newRace || ((Integer) spnFormNumber.getValue()) == controller.getRace().getNumber()))
-				errors.add("Le numéro saisi n'est pas disponible");
+				errors.add(RESOURCES.getString("formError.number.noavailable"));
 		}
 		
 		// Name check
 		if (tfdFormName.getText().length() < 4)
-			errors.add("Le nom du participant doit contenir au moins 4 caractères");
+			errors.add(RESOURCES.getString("formError.name.length"));
 		
 		// Birthday check
 		if (!tfdFormBirthday.getText().matches("[0-9]{2}/[0-9]{2}/[0-9]{4}"))
-			errors.add("La date n'est pas au format 'dd/mm/yyyy'");
+			errors.add(RESOURCES.getString("formError.birthday.format") + " 'dd/mm/yyyy'");
 		
 		// Validating chek
 		if (errors.size() == 0) {
@@ -261,7 +261,7 @@ public class SetRaceFrame extends JDialog {
 			for (String error: errors)
 				message += "- " + error + ".\n";
 			
-			JOptionPane.showMessageDialog(this, message, Application.NAME + " - " + "Informations incomplètes", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(this, message, Application.NAME + " - " + RESOURCES.getString("dialog.formError.title"), JOptionPane.ERROR_MESSAGE);
 		}
 	}
 }

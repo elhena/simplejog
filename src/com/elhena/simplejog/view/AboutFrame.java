@@ -19,13 +19,15 @@ import com.elhena.simplejog.app.model.Application;
 import com.elhena.simplejog.controller.AboutController;
 import com.elhena.simplejog.util.loader.ResourcesLoader;
 import java.awt.Component;
+import java.util.ResourceBundle;
 
 public class AboutFrame extends JDialog {
 
 	// Constants
 	private static final long serialVersionUID = 1L;
 	private static final String WINDOW_TITLE = Application.NAME + " " + Application.VERSION + " - " + Application.LAST_UPDATE;
-	private static final Dimension WINDOW_SIZE = new Dimension(400, 390);
+	private static final Dimension WINDOW_SIZE = new Dimension(400, 370);
+	private static final ResourceBundle RESOURCES = ResourceBundle.getBundle(AboutFrame.class.getName());
 	
 	// Attributes
 	private AboutController controller;
@@ -48,6 +50,7 @@ public class AboutFrame extends JDialog {
 		setMinimumSize(WINDOW_SIZE);
 		setResizable(false);
 		setModal(true);
+		setAlwaysOnTop(true);
 		setLocationRelativeTo(null);
 		
 		contentPane = new JPanel();
@@ -67,14 +70,13 @@ public class AboutFrame extends JDialog {
 		contentPane.add(lblLogo, BorderLayout.NORTH);
 		
 		// Informations
-		pnlContent.add(new JLabel("Version: " + Application.VERSION));
-		pnlContent.add(new JLabel("Date de mise à jour: " + Application.LAST_UPDATE));
-		pnlContent.add(new JLabel("Auteur: Fabien Vanden Bulck <fabien@elhena.com>"));
-		pnlContent.add(new JLabel("Sur demande de: Nicolas Lambert (HF011 Pionniers)"));
-		pnlContent.add(new JLabel("Dédiée à: scouts et autres mouvements de jeunesse"));
-		pnlContent.add(new JLabel("Page: " + Application.WEBPAGE));
-		pnlContent.add(new JLabel("Site Internet: " + Application.WEBSITE));
-		pnlContent.add(new JLabel("Copyright: " + Application.COPYRIGHT));
-		pnlContent.add(new JLabel("License: Publique générale GNU"));
+		pnlContent.add(new JLabel(RESOURCES.getString("info.version.title") + ": " + Application.VERSION));
+		pnlContent.add(new JLabel(RESOURCES.getString("info.update.title") + ": " + Application.LAST_UPDATE));
+		pnlContent.add(new JLabel(RESOURCES.getString("info.author.title") + ": Fabien Vanden Bulck <fabien@elhena.com>"));
+		pnlContent.add(new JLabel(RESOURCES.getString("info.dedicatedto.title") + ": " + RESOURCES.getString("info.dedicatedto")));
+		pnlContent.add(new JLabel(RESOURCES.getString("info.webpage.title") + ": " + Application.WEBPAGE));
+		pnlContent.add(new JLabel(RESOURCES.getString("info.website.title") + ": " + Application.WEBSITE));
+		pnlContent.add(new JLabel(RESOURCES.getString("info.copyright.title") + ": " + Application.COPYRIGHT));
+		pnlContent.add(new JLabel(RESOURCES.getString("info.license.title") + ": " + RESOURCES.getString("info.license")));
 	}
 }

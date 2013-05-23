@@ -12,6 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.ResourceBundle;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -33,8 +34,8 @@ public class ArrivalCaptureFrame extends JFrame {
 
 	// Constants
 	private static final long serialVersionUID = 1L;
-	private static final String WINDOW_TITLE = "Capture à l'arrivée";
 	private static final Dimension WINDOW_SIZE = new Dimension(200, 220);
+	private static final ResourceBundle RESOURCES = ResourceBundle.getBundle(ArrivalCaptureFrame.class.getName());
 	
 	// Attributes
 	private ArrivalCaptureController controller;
@@ -57,7 +58,7 @@ public class ArrivalCaptureFrame extends JFrame {
 		// Window setup
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setIconImage(ResourcesLoader.getImage("icon.png"));
-		setTitle(WINDOW_TITLE);
+		setTitle(RESOURCES.getString("title"));
 		setSize(WINDOW_SIZE);
 		setMinimumSize(WINDOW_SIZE);
 		setResizable(false);
@@ -75,7 +76,7 @@ public class ArrivalCaptureFrame extends JFrame {
 		pnlCapture.setLayout(new BoxLayout(pnlCapture, BoxLayout.Y_AXIS));
 		contentPane.add(pnlCapture, BorderLayout.CENTER);
 		
-		lblInstruction = new JLabel("Numéro: ");
+		lblInstruction = new JLabel(RESOURCES.getString("label.lblInstruction") + ": ");
 		lblInstruction.setAlignmentX(Component.CENTER_ALIGNMENT);
 		pnlCapture.add(lblInstruction);
 		
@@ -86,7 +87,7 @@ public class ArrivalCaptureFrame extends JFrame {
 		tfdCapture.requestFocus();
 		pnlCapture.add(tfdCapture);
 		
-		btnCapture = new JButton("Capturer");
+		btnCapture = new JButton(RESOURCES.getString("button.btnCapture"));
 		btnCapture.setAlignmentX(Component.CENTER_ALIGNMENT);
 		pnlCapture.add(btnCapture);
 		btnCapture.addActionListener(new ActionListener() {
@@ -96,7 +97,7 @@ public class ArrivalCaptureFrame extends JFrame {
 				if (tfdCapture.getText().matches("[0-9]+"))
 					arrival(Integer.parseInt(tfdCapture.getText()));
 				else
-					JOptionPane.showMessageDialog(ArrivalCaptureFrame.this, "Le champ ne tolère qu'un nombre.", Application.NAME + " - Erreur de saisie", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(ArrivalCaptureFrame.this, RESOURCES.getString("dialog.number.format.message") + ".", RESOURCES.getString("dialog.number.format.title"), JOptionPane.ERROR_MESSAGE);
 ;			}
 		});
 		
@@ -110,7 +111,7 @@ public class ArrivalCaptureFrame extends JFrame {
 					}
 					
 					else
-						JOptionPane.showMessageDialog(ArrivalCaptureFrame.this, "Le champ ne tolère qu'un nombre.", Application.NAME + " - Erreur de saisie", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(ArrivalCaptureFrame.this, RESOURCES.getString("dialog.number.format.message") + ".", RESOURCES.getString("dialog.number.format.title"), JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});
@@ -121,7 +122,7 @@ public class ArrivalCaptureFrame extends JFrame {
 		pnlPreviousCapture.setLayout(new BoxLayout(pnlPreviousCapture, BoxLayout.Y_AXIS));
 		contentPane.add(pnlPreviousCapture, BorderLayout.SOUTH);
 		
-		lblPreviousCapture = new JLabel("Arrivée précédente: ");
+		lblPreviousCapture = new JLabel(RESOURCES.getString("label.lblPreviousCapture") + ": ");
 		lblPreviousCapture.setAlignmentX(Component.CENTER_ALIGNMENT);
 		lblPreviousCaptureName = new JLabel();
 		lblPreviousCaptureName.setAlignmentX(Component.CENTER_ALIGNMENT);

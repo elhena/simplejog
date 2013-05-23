@@ -7,11 +7,13 @@ package com.elhena.simplejog.model;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.ResourceBundle;
 
 public class Jogger implements Serializable {
 	
 	// Constants
 	private static final long serialVersionUID = 1L;
+	private static final ResourceBundle RESOURCES = ResourceBundle.getBundle(Jogger.class.getName());
 	
 	// Attributes
 	private String name;
@@ -38,9 +40,9 @@ public class Jogger implements Serializable {
 	
 	public String getSexAsString() {
 		switch(sex) {
-			case MAN: return "Homme";
-			case WOMAN: return "Femme";
-			default : return "Inconnu";
+			case MAN: return RESOURCES.getString("sex.male");
+			case WOMAN: return RESOURCES.getString("sex.female");
+			default : return RESOURCES.getString("sex.unknown");
 		}
 	}
 	

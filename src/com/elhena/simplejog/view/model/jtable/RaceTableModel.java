@@ -6,6 +6,7 @@ package com.elhena.simplejog.view.model.jtable;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.ResourceBundle;
 
 import javax.swing.table.AbstractTableModel;
 
@@ -15,9 +16,10 @@ public class RaceTableModel extends AbstractTableModel {
 
 	// Constants
 	private static final long serialVersionUID = 1L;
+	private static final ResourceBundle RESOURCES = ResourceBundle.getBundle(RaceTableModel.class.getName());
 	
 	// Attributes
-	private final String[] columns = new String[] {"Numéro", "Nom", "Départ", "Arrivée", "Durée"};
+	private final String[] columns = new String[] {RESOURCES.getString("column.number"), RESOURCES.getString("column.name"), RESOURCES.getString("column.departure"), RESOURCES.getString("column.arrival"), RESOURCES.getString("column.duration")};
 	private Competition competition;
 	
 	

@@ -10,6 +10,7 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.ResourceBundle;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -31,8 +32,8 @@ public class NewCompetitionFrame extends JFrame {
 
 	// Constants
 	private static final long serialVersionUID = 1L;
-	private static final String WINDOW_TITLE = "Nouvelle compétition";
 	private static final Dimension WINDOW_SIZE = new Dimension(400, 160);
+	private static final ResourceBundle RESOURCES = ResourceBundle.getBundle(NewCompetitionFrame.class.getName());
 	
 	// Attributes
 	private NewCompetitionController controller;
@@ -56,7 +57,7 @@ public class NewCompetitionFrame extends JFrame {
 		// Window setup
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setIconImage(ResourcesLoader.getImage("icon.png"));
-		setTitle(Application.NAME + " - " + WINDOW_TITLE);
+		setTitle(Application.NAME + " - " + RESOURCES.getString("title"));
 		setSize(WINDOW_SIZE);
 		setMinimumSize(WINDOW_SIZE);
 		setResizable(false);
@@ -74,13 +75,13 @@ public class NewCompetitionFrame extends JFrame {
 		contentPane.add(pnlForm, BorderLayout.CENTER);
 		
 		// Form : Name
-		lblFormName = new JLabel("Nom: ");
+		lblFormName = new JLabel(RESOURCES.getString("label.lblFormName") + ": ");
 		tfdFormName = new JTextField();
 		pnlForm.add(lblFormName, "cell 0 0");
 		pnlForm.add(tfdFormName, "cell 1 0, width :340:");
 		
 		// Form : Location
-		lblFormLocation = new JLabel("Lieu: ");
+		lblFormLocation = new JLabel(RESOURCES.getString("label.lblFormLocation") + ": ");
 		tfdFormLocation = new JTextField();
 		pnlForm.add(lblFormLocation, "cell 0 1");
 		pnlForm.add(tfdFormLocation, "cell 1 1, width :340:");
@@ -91,7 +92,7 @@ public class NewCompetitionFrame extends JFrame {
 		pnlActions.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		contentPane.add(pnlActions, BorderLayout.SOUTH);
 		
-		btnCancel = new JButton("Annuler");
+		btnCancel = new JButton(RESOURCES.getString("button.btnCancel"));
 		btnCancel.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent event) {
@@ -100,7 +101,7 @@ public class NewCompetitionFrame extends JFrame {
 			}
 		});
 		
-		btnCreate = new JButton("Créer");
+		btnCreate = new JButton(RESOURCES.getString("button.btnCreate"));
 		btnCreate.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent event) {
@@ -117,10 +118,10 @@ public class NewCompetitionFrame extends JFrame {
 		ArrayList<String> errors = new ArrayList<String>();
 		
 		if (tfdFormName.getText().length() < 2)
-			errors.add("Le nom de l'évènement ne peut être vide et doit être composé d'au moins deux caractères");
+			errors.add(RESOURCES.getString("formError.name.length"));
 		
 		if (tfdFormLocation.getText().length() < 2)
-			errors.add("Le lieu de l'évènement doit être obligatoirement spécifié et contenir au moins deux caractères");
+			errors.add(RESOURCES.getString("formError.location.length"));
 		
 		if (errors.size() == 0) {
 			Competition competition = new Competition(tfdFormName.getText(), tfdFormLocation.getText());
@@ -134,7 +135,7 @@ public class NewCompetitionFrame extends JFrame {
 			for (String error : errors)
 				message += "- " + error + ".\n";
 			
-			JOptionPane.showMessageDialog(this, message, Application.NAME + " - Informations incomplètes", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(this, message, Application.NAME + " - " + RESOURCES.getString("dialog.formError.title"), JOptionPane.ERROR_MESSAGE);
 		}
 	}
 }

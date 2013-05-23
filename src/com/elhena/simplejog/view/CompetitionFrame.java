@@ -19,6 +19,7 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -54,6 +55,7 @@ public class CompetitionFrame extends JFrame {
 	// Constants
 	private static final long serialVersionUID = 1L;
 	private static final Dimension WINDOW_SIZE = new Dimension(800, 600);
+	private static final ResourceBundle RESOURCES = ResourceBundle.getBundle(CompetitionFrame.class.getName());
 	
 	// Attributes
 	private CompetitionController controller;
@@ -107,11 +109,11 @@ public class CompetitionFrame extends JFrame {
 		setJMenuBar(menuBar);
 				
 		// Menu : File
-		menu = new JMenu("Fichier");
+		menu = new JMenu(RESOURCES.getString("menu.file"));
 		menu.setMnemonic(KeyEvent.VK_F);
 		menuBar.add(menu);
 		
-		menuItem = new JMenuItem("Nouveau");
+		menuItem = new JMenuItem(RESOURCES.getString("menu.file.new"));
 		menuItem.setMnemonic(KeyEvent.VK_N);
 		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, KeyEvent.CTRL_DOWN_MASK));
 		menu.add(menuItem);
@@ -119,7 +121,7 @@ public class CompetitionFrame extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent event) {
 				if (!Competition.dataIsUpdated()) {
-					int choice = JOptionPane.showConfirmDialog(CompetitionFrame.this, "Fermer la compétition? Toutes les modifications ne seront prises en compte.", "Fermer sans sauvegarder?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+					int choice = JOptionPane.showConfirmDialog(CompetitionFrame.this, RESOURCES.getString("dialog.closing.warning.message") + ".", RESOURCES.getString("dialog.closing.warning.title") + "?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 					
 					if (choice == JOptionPane.YES_OPTION) {
 						dispose();
@@ -137,7 +139,7 @@ public class CompetitionFrame extends JFrame {
 			}
 		});
 		
-		menuItem = new JMenuItem("Ouvrir");
+		menuItem = new JMenuItem(RESOURCES.getString("menu.file.open"));
 		menuItem.setMnemonic(KeyEvent.VK_O);
 		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.CTRL_DOWN_MASK));
 		menu.add(menuItem);
@@ -145,10 +147,10 @@ public class CompetitionFrame extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent event) {
 				if (!Competition.dataIsUpdated()) {
-					int choice = JOptionPane.showConfirmDialog(CompetitionFrame.this, "Fermer la compétition? Toutes les modifications ne seront prises en compte.", "Fermer sans sauvegarder?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+					int choice = JOptionPane.showConfirmDialog(CompetitionFrame.this, RESOURCES.getString("dialog.closing.warning.message") + ".", RESOURCES.getString("dialog.closing.warning.title") + "?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 					
 					if (choice == JOptionPane.YES_OPTION) {
-						FileDialog dialog = new FileDialog(CompetitionFrame.this, "Charger une compétition...", FileDialog.LOAD);
+						FileDialog dialog = new FileDialog(CompetitionFrame.this, RESOURCES.getString("dialog.open.title") + "...", FileDialog.LOAD);
 						dialog.setFilenameFilter(new FilenameFilter() {
 							@Override
 							public boolean accept(File directory, String fileName) {
@@ -170,7 +172,7 @@ public class CompetitionFrame extends JFrame {
 				}
 				
 				else {
-					FileDialog dialog = new FileDialog(CompetitionFrame.this, "Charger une compétition...", FileDialog.LOAD);
+					FileDialog dialog = new FileDialog(CompetitionFrame.this, RESOURCES.getString("dialog.open.title") + "...", FileDialog.LOAD);
 					dialog.setFilenameFilter(new FilenameFilter() {
 						@Override
 						public boolean accept(File directory, String fileName) {
@@ -192,7 +194,7 @@ public class CompetitionFrame extends JFrame {
 			}
 		});
 		
-		menuSave = new JMenuItem("Sauvegarder");
+		menuSave = new JMenuItem(RESOURCES.getString("menu.file.save"));
 		menuSave.setMnemonic(KeyEvent.VK_S);
 		menuSave.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK));
 		menu.add(menuSave);
@@ -201,7 +203,7 @@ public class CompetitionFrame extends JFrame {
 			public void actionPerformed(ActionEvent event) {
 				if (savePath == null) {
 				
-					FileDialog dialog = new FileDialog(CompetitionFrame.this, "Enregistrer la compétition sous...", FileDialog.SAVE);
+					FileDialog dialog = new FileDialog(CompetitionFrame.this, RESOURCES.getString("dialog.save.title") + "...", FileDialog.SAVE);
 					dialog.setVisible(true);
 					
 					savePath = dialog.getDirectory() + dialog.getFile() + ".jog";
@@ -211,41 +213,41 @@ public class CompetitionFrame extends JFrame {
 				}
 				
 				controller.saveCompetition(savePath);
-				JOptionPane.showMessageDialog(CompetitionFrame.this, "La compétition a bien été sauvegardée!", "Compétition sauvegardée!", JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(CompetitionFrame.this, RESOURCES.getString("dialog.save.successfull.message") + ".", RESOURCES.getString("dialog.save.successfull.title"), JOptionPane.INFORMATION_MESSAGE);
 				Competition.notifyDataUpdated();
 				disableSaveFunction();
 			}
 		});
 		
-		menuItem = new JMenuItem("Sauvegarder sous...");
+		menuItem = new JMenuItem(RESOURCES.getString("menu.file.saveas"));
 		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK + KeyEvent.SHIFT_DOWN_MASK));
 		menu.add(menuItem);
 		menuItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent event) {
-				FileDialog dialog = new FileDialog(CompetitionFrame.this, "Enregistrer la compétition sous...", FileDialog.SAVE);
+				FileDialog dialog = new FileDialog(CompetitionFrame.this, RESOURCES.getString("dialog.save.title") + "...", FileDialog.SAVE);
 				dialog.setVisible(true);
 				
 				String path = dialog.getDirectory() + dialog.getFile() + ".jog";
 				
 				if (!path.equals("nullnull.jog")) {
 					controller.saveCompetition(dialog.getDirectory() + dialog.getFile() + ".jog");
-					JOptionPane.showMessageDialog(CompetitionFrame.this, "La compétition a bien été sauvegardée!", "Compétition sauvegardée", JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(CompetitionFrame.this, RESOURCES.getString("dialog.save.successful.message") + ".", RESOURCES.getString("dialog.save.successfull.title"), JOptionPane.INFORMATION_MESSAGE);
 				}
 			}
 		});
 		
 		menu.addSeparator();
 		
-		menuItem = new JMenuItem("Fermer");
-		menuItem.setMnemonic(KeyEvent.VK_F);
-		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F, KeyEvent.CTRL_DOWN_MASK));
+		menuItem = new JMenuItem(RESOURCES.getString("menu.file.close"));
+		menuItem.setMnemonic(KeyEvent.VK_W);
+		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W, KeyEvent.CTRL_DOWN_MASK));
 		menu.add(menuItem);
 		menuItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent event) {
 				if (!Competition.dataIsUpdated()) {
-					int choice = JOptionPane.showConfirmDialog(CompetitionFrame.this, "Fermer la compétition? Toutes les modifications ne seront prises en compte.", "Fermer sans sauvegarder?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+					int choice = JOptionPane.showConfirmDialog(CompetitionFrame.this, RESOURCES.getString("dialog.closing.warning.message") + ".", RESOURCES.getString("dialog.closing.warning.title") + "?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 					
 					if (choice == JOptionPane.YES_OPTION) {
 						dispose();
@@ -261,7 +263,7 @@ public class CompetitionFrame extends JFrame {
 			}
 		});
 		
-		menuItem = new JMenuItem("Quitter");
+		menuItem = new JMenuItem(RESOURCES.getString("menu.file.quit"));
 		menuItem.setMnemonic(KeyEvent.VK_Q);
 		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, KeyEvent.CTRL_DOWN_MASK));
 		menu.add(menuItem);
@@ -269,7 +271,7 @@ public class CompetitionFrame extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent event) {
 				if (!Competition.dataIsUpdated()) {
-					int choice = JOptionPane.showConfirmDialog(CompetitionFrame.this, "Quitter l'application? Toutes les modifications ne seront prises en compte.", "Quitter sans sauvegarder?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+					int choice = JOptionPane.showConfirmDialog(CompetitionFrame.this, RESOURCES.getString("dialog.quitting.warning.message") + ".", RESOURCES.getString("dialog.quitting.warning.title") + "?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 					
 					if (choice == JOptionPane.YES_OPTION) {
 						dispose();
@@ -285,11 +287,11 @@ public class CompetitionFrame extends JFrame {
 		});
 		
 		// Menu : Competition
-		menu = new JMenu("Compétition");
+		menu = new JMenu(RESOURCES.getString("menu.competition"));
 		menu.setMnemonic(KeyEvent.VK_C);
 		menuBar.add(menu);
 		
-		menuItemStartCompetition = new JMenuItem("Démarrer");
+		menuItemStartCompetition = new JMenuItem(RESOURCES.getString("menu.competition.start"));
 		menuItemStartCompetition.setMnemonic(KeyEvent.VK_D);
 		menuItemStartCompetition.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_D, KeyEvent.CTRL_DOWN_MASK + KeyEvent.SHIFT_DOWN_MASK));
 		menu.add(menuItemStartCompetition);
@@ -300,7 +302,7 @@ public class CompetitionFrame extends JFrame {
 			}
 		});
 		
-		menuItemStopCompetition = new JMenuItem("Arrêter");
+		menuItemStopCompetition = new JMenuItem(RESOURCES.getString("menu.competition.stop"));
 		menuItemStopCompetition.setEnabled(false);
 		menuItemStopCompetition.setMnemonic(KeyEvent.VK_A);
 		menuItemStopCompetition.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, KeyEvent.CTRL_DOWN_MASK + KeyEvent.SHIFT_DOWN_MASK));
@@ -308,16 +310,16 @@ public class CompetitionFrame extends JFrame {
 		menuItemStopCompetition.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent event) {
-				if (JOptionPane.showConfirmDialog(CompetitionFrame.this, "Êtes-vous sûr de vouloir mettre fin à la compétition? Cela sera irreversible.", Application.NAME + " - Arrêter la compétition?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION) controller.stopCompetition();
+				if (JOptionPane.showConfirmDialog(CompetitionFrame.this, RESOURCES.getString("dialog.stop.confirming.message") + ".", RESOURCES.getString("dialog.stop.confirming.title") + "?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION) controller.stopCompetition();
 			}
 		});
 		
 		// Menu : Help
-		menu = new JMenu("?");
+		menu = new JMenu(RESOURCES.getString("menu.question"));
 		menu.setMnemonic(KeyEvent.VK_H);
 		menuBar.add(menu);
 		
-		menuItem = new JMenuItem("À propos...");
+		menuItem = new JMenuItem(RESOURCES.getString("menu.question.about") + "...");
 		menuItem.setMnemonic(KeyEvent.VK_A);
 		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, KeyEvent.CTRL_DOWN_MASK + KeyEvent.SHIFT_DOWN_MASK));
 		menu.add(menuItem);
@@ -342,7 +344,7 @@ public class CompetitionFrame extends JFrame {
 		pnlCompetition.add(pnlCompetitionInfos);
 		
 		// Competition details
-		lblInfos = new JLabel("Compétition: " + controller.getCompetition().getName() + " à " + controller.getCompetition().getLocation());
+		lblInfos = new JLabel(RESOURCES.getString("label.lblInfos.competition") + ": " + controller.getCompetition().getName() + " " + RESOURCES.getString("label.lblInfos.at") + " " + controller.getCompetition().getLocation());
 		pnlCompetitionInfos.add(lblInfos);
 		
 		// Competition controls
@@ -351,15 +353,15 @@ public class CompetitionFrame extends JFrame {
 		pnlCompetitionControls.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		pnlCompetitionInfos.add(pnlCompetitionControls);
 		
-		btnStartandStop = new JButton("Démarrer");
-		btnStartandStop.setToolTipText("Commencer la course");
+		btnStartandStop = new JButton(RESOURCES.getString("button.btnStartandStop.start"));
+		btnStartandStop.setToolTipText(RESOURCES.getString("button.btnStartandStop.start.tip"));
 		pnlCompetitionControls.add(btnStartandStop);
 		btnStartandStop.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent event) {
 				switch(controller.getCompetition().getStatus()) {
 					case STANDBY: controller.startCompetition(); break;
-					case RUNNING: if (JOptionPane.showConfirmDialog(CompetitionFrame.this, "Êtes-vous sûr de vouloir mettre fin à la compétition? Cela sera irreversible.", Application.NAME + " - Arrêter la compétition?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION) controller.stopCompetition(); break;
+					case RUNNING: if (JOptionPane.showConfirmDialog(CompetitionFrame.this, RESOURCES.getString("dialog.stop.confirming.message") + ".", RESOURCES.getString("dialog.stop.confirming.title") + "?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION) controller.stopCompetition(); break;
 					case FINISHED: generatePDF(); break;
 					default: break;
 				}	
@@ -368,7 +370,7 @@ public class CompetitionFrame extends JFrame {
 		
 		// Competition timer
 		pnlCompetitionTimer = new JPanel();
-		pnlCompetitionTimer.setBorder(new TitledBorder(new LineBorder(Color.GRAY), "Chronomètre", TitledBorder.CENTER, TitledBorder.TOP));
+		pnlCompetitionTimer.setBorder(new TitledBorder(new LineBorder(Color.GRAY), RESOURCES.getString("timer.name"), TitledBorder.CENTER, TitledBorder.TOP));
 		pnlCompetitionTimer.setLayout(new BorderLayout(0, 0));
 		pnlCompetition.add(pnlCompetitionTimer);
 		
@@ -398,8 +400,8 @@ public class CompetitionFrame extends JFrame {
 		pnlJoggersControlsAdd.setLayout(new FlowLayout(FlowLayout.LEFT));
 		pnlJoggersControls.add(pnlJoggersControlsAdd);
 		
-		btnAddJogger = new JButton("Ajouter");
-		btnAddJogger.setToolTipText("Ajouter un nouveau participant");
+		btnAddJogger = new JButton(RESOURCES.getString("button.btnAddJogger"));
+		btnAddJogger.setToolTipText(RESOURCES.getString("button.btnAddJogger.tip"));
 		pnlJoggersControlsAdd.add(btnAddJogger);
 		btnAddJogger.addActionListener(new ActionListener() {
 			@Override
@@ -414,8 +416,8 @@ public class CompetitionFrame extends JFrame {
 		pnlJoggersControlsEdit.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		pnlJoggersControls.add(pnlJoggersControlsEdit);
 		
-		btnViewJogger = new JButton("Consulter");
-		btnViewJogger.setToolTipText("Afficher les informations du participant sélectionné");
+		btnViewJogger = new JButton(RESOURCES.getString("button.btnViewJogger"));
+		btnViewJogger.setToolTipText(RESOURCES.getString("button.btnViewJogger.tip"));
 		pnlJoggersControlsEdit.add(btnViewJogger);
 		btnViewJogger.addActionListener(new ActionListener() {
 			@Override
@@ -423,12 +425,12 @@ public class CompetitionFrame extends JFrame {
 				if (tblJoggers.getSelectedRow() != -1)
 					controller.openViewRaceFrame(controller.getCompetition().getRaces().get(tblJoggers.convertRowIndexToModel(tblJoggers.getSelectedRow())));
 				else
-					JOptionPane.showMessageDialog(CompetitionFrame.this, "Aucun participant n'a été sélectionné pour être consulté.", Application.NAME + " - Consultation impossible", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(CompetitionFrame.this, RESOURCES.getString("dialog.consult.noselection.message") + ".", RESOURCES.getString("dialog.consult.noselection.title"), JOptionPane.ERROR_MESSAGE);
 			}
 		});
 		
-		btnEditJogger = new JButton("Modifier");
-		btnEditJogger.setToolTipText("Modifier le participant sélectionné");
+		btnEditJogger = new JButton(RESOURCES.getString("button.btnEditJogger"));
+		btnEditJogger.setToolTipText(RESOURCES.getString("button.btnEditJogger.tip"));
 		pnlJoggersControlsEdit.add(btnEditJogger);
 		btnEditJogger.addActionListener(new ActionListener() {
 			@Override
@@ -436,12 +438,12 @@ public class CompetitionFrame extends JFrame {
 				if (tblJoggers.getSelectedRow() != -1)
 					controller.openSetRaceFrame(controller.getCompetition().getRaces().get(tblJoggers.convertRowIndexToModel(tblJoggers.getSelectedRow())));
 				else
-					JOptionPane.showMessageDialog(CompetitionFrame.this, "Aucun participant n'a été sélectionné pour être modifié.", Application.NAME + " - Modification impossible", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(CompetitionFrame.this, RESOURCES.getString("dialog.edit.noselection.message") + ".", RESOURCES.getString("dialog.edit.noselection.title"), JOptionPane.ERROR_MESSAGE);
 			}
 		});
 		
-		btnDeleteJogger = new JButton("Supprimer");
-		btnDeleteJogger.setToolTipText("Supprimer le participant sélectionné");
+		btnDeleteJogger = new JButton(RESOURCES.getString("button.btnDeleteJogger"));
+		btnDeleteJogger.setToolTipText(RESOURCES.getString("button.btnDeleteJogger.tip"));
 		pnlJoggersControlsEdit.add(btnDeleteJogger);
 		btnDeleteJogger.addActionListener(new ActionListener() {
 			@Override
@@ -450,7 +452,7 @@ public class CompetitionFrame extends JFrame {
 				if (tblJoggers.getSelectedRow() != -1) {
 					Race raceToDelete = controller.getCompetition().getRaces().get(tblJoggers.convertRowIndexToModel(tblJoggers.getSelectedRow()));
 					
-					int choice =  JOptionPane.showConfirmDialog(CompetitionFrame.this, "Êtes-vous sûr de vouloir supprimer le participant '" + raceToDelete.getJogger().getName() + "'?", Application.NAME + " - Suppression de la sélection", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+					int choice =  JOptionPane.showConfirmDialog(CompetitionFrame.this, RESOURCES.getString("dialog.delete.confirming.message") + " '" + raceToDelete.getJogger().getName() + "'?", RESOURCES.getString("dialog.delete.confirming.title"), JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 					
 					if (choice == JOptionPane.YES_OPTION) {
 						controller.removeRace(raceToDelete);
@@ -460,7 +462,7 @@ public class CompetitionFrame extends JFrame {
 				}
 				
 				else
-					JOptionPane.showMessageDialog(CompetitionFrame.this, "Aucun participant n'a été sélectionné pour être supprimé.", Application.NAME + " - Suppression impossible", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(CompetitionFrame.this, RESOURCES.getString("dialog.delete.noselection.message") + ".", RESOURCES.getString("dialog.delete.noselection.title"), JOptionPane.ERROR_MESSAGE);
 			}
 		});
 		
@@ -469,7 +471,7 @@ public class CompetitionFrame extends JFrame {
 			@Override
 			public void windowClosing(WindowEvent event) {
 				if (!Competition.dataIsUpdated()) {
-					int choice = JOptionPane.showConfirmDialog(CompetitionFrame.this, "Quitter l'application? Toutes les modifications ne seront prises en compte.", "Quitter sans sauvegarder?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+					int choice = JOptionPane.showConfirmDialog(CompetitionFrame.this, RESOURCES.getString("dialog.quitting.warning.message") + ".", RESOURCES.getString("dialog.quitting.warning.title") + "?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 					
 					if (choice == JOptionPane.YES_OPTION) {
 						dispose();
@@ -495,8 +497,8 @@ public class CompetitionFrame extends JFrame {
 			btnAddJogger.setEnabled(false);
 			btnEditJogger.setEnabled(false);
 			btnDeleteJogger.setEnabled(false);
-			btnStartandStop.setText("Obtenir le classement");
-			btnStartandStop.setToolTipText("Obtenir le classement au format PDF");
+			btnStartandStop.setText(RESOURCES.getString("button.btnStartandStop.results"));
+			btnStartandStop.setToolTipText(RESOURCES.getString("button.btnStartandStop.results.tip"));
 			btnEditJogger.setEnabled(true);
 			menuItemStartCompetition.setEnabled(false);
 			menuItemStopCompetition.setEnabled(false);
@@ -512,8 +514,8 @@ public class CompetitionFrame extends JFrame {
 	// Method : Start competition
 	public void startCompetition() {
 		// Disable buttons
-		btnStartandStop.setText("Arrêter");
-		btnStartandStop.setToolTipText("Mettre fin à la course");
+		btnStartandStop.setText(RESOURCES.getString("button.btnStartandStop.stop"));
+		btnStartandStop.setToolTipText(RESOURCES.getString("button.btnStartandStop.stop.tip"));
 		btnAddJogger.setEnabled(false);
 		btnEditJogger.setEnabled(false);
 		btnDeleteJogger.setEnabled(false);
@@ -540,8 +542,8 @@ public class CompetitionFrame extends JFrame {
 		timer.cancel();
 		
 		// Enable buttons
-		btnStartandStop.setText("Obtenir le classement");
-		btnStartandStop.setToolTipText("Obtenir le classement au format PDF");
+		btnStartandStop.setText(RESOURCES.getString("button.btnStartandStop.results"));
+		btnStartandStop.setToolTipText(RESOURCES.getString("button.btnStartandStop.results.tip"));
 		btnEditJogger.setEnabled(true);
 		menuItemStopCompetition.setEnabled(false);
 		
@@ -562,7 +564,7 @@ public class CompetitionFrame extends JFrame {
 	
 	// Method : Generate PDF file
 	public void generatePDF() {
-		FileDialog dialog = new FileDialog(this, "Exporter la compétition en PDF...", FileDialog.SAVE);
+		FileDialog dialog = new FileDialog(this, RESOURCES.getString("dialog.export.title") + "...", FileDialog.SAVE);
 		dialog.setFilenameFilter(new FilenameFilter() {
 			@Override
 			public boolean accept(File dir, String fileName) {
@@ -578,7 +580,7 @@ public class CompetitionFrame extends JFrame {
 		if (dialog.getDirectory() != null && dialog.getFile() != null) {
 			CompetitionPDFExporter exporter = new CompetitionPDFExporter(dialog.getDirectory() + dialog.getFile() + ".pdf");
 			exporter.generate(controller.getCompetition());
-			JOptionPane.showMessageDialog(this, "Le classement a bien été exporté!", "Classement exporté en PDF", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(this, RESOURCES.getString("dialog.export.successfull.message") + ".", RESOURCES.getString("dialog.export.successfull.title"), JOptionPane.INFORMATION_MESSAGE);
 		}
 	}
 }
