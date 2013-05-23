@@ -11,7 +11,7 @@ public class Application {
 	// Constants
 	public static final String NAME = "SimpleJog";
 	public static final String VERSION = "0.2";
-	public static final String LAST_UPDATE = "16/05/2013";
+	public static final String LAST_UPDATE = "23/05/2013";
 	public static final String WEBPAGE = "https://github.com/elhena/simplejog";
 	public static final String COPYRIGHT = "(C) 2013 Fabien Vanden Bulck";
 	public static final String WEBSITE = "http://www.elhena.com";
